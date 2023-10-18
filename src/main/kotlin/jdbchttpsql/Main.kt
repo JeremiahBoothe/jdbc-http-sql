@@ -3,7 +3,10 @@ package jdbchttpsql
 import jdbchttpsql.data.SocialMediaBuilder
 import jdbchttpsql.model.HttpSqlBridge
 
-fun main() {
+
+//TODO: Args - command line arguments for one time configuration.
+fun main(Args: Array<String>) {
+
 
     val socialMediaPost = SocialMediaBuilder.Builder()
         .connection("Blue Sky")
