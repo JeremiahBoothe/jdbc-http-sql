@@ -1,9 +1,9 @@
 package jdbchttpsql
 
-import jdbchttpsql.Model.SLERadio
+import jdbchttpsql.model.HttpSqlBridge
 
 fun main() {
 
-    val runSLE = SLERadio().runSLE()
+    val runSLE = HttpSqlBridge().runSLE()
     return runSLE
 }

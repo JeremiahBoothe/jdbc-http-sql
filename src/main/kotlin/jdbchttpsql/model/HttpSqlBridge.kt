@@ -1,19 +1,19 @@
-package jdbchttpsql.Model
+package jdbchttpsql.model
 
-import jdbchttpsql.Repository.HttpRequests
-import jdbchttpsql.Repository.InsertMethods
-import jdbchttpsql.Repository.SQLQueries
+import jdbchttpsql.repository.HttpRequests
+import jdbchttpsql.repository.InsertMethods
+import jdbchttpsql.repository.SQLQueries
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class SLERadio {
+class HttpSqlBridge {
     fun sleRadio() {
         val insertMethods = InsertMethods()
         val httpRequests = HttpRequests()
         val databaseConnector = SQLQueries().database
-        /*Connect to database, same instance as SQLQueries()
+        /** Connect to database, same instance as SQLQueries()
       takes Json data from http and implements it in sql entry*/
         var recursionVariable = 1
 
@@ -42,14 +42,13 @@ class SLERadio {
         }
     }
     fun runSLE() {
-        val sleRadio = SLERadio()
+        val httpSqlBridge = HttpSqlBridge()
         var x = 1
         while (x != 2) {
-            sleRadio.sleRadio()
-            x = 1
+            httpSqlBridge.sleRadio()
         }
     }
-        //database.deleteAll(SLEDATA.RadioMetaData)
+        //database.deleteAll(FormatData.RadioMetaData)
 }
 
 

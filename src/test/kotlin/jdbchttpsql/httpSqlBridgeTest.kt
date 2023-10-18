@@ -1,10 +1,10 @@
 package jdbchttpsql
 
-import jdbchttpsql.Model.SLERadio
+import jdbchttpsql.model.HttpSqlBridge
 import org.junit.jupiter.api.Test
 
-class SLERadioTest {
-    val SLERADIO = SLERadio()
+class httpSqlBridgeTest {
+    val SLERADIO = HttpSqlBridge()
 
     @Test
     fun testSLERadio() {
