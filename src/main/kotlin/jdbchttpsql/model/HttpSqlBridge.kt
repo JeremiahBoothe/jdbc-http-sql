@@ -40,15 +40,7 @@ class HttpSqlBridge {
                 return@launch
             }
         }
-    }
-    fun runSLE() {
-        val httpSqlBridge = HttpSqlBridge()
-        var x = 1
-        while (x != 2) {
-            httpSqlBridge.sleRadio()
-        }
-    }
-        //database.deleteAll(FormatData.RadioMetaData)
+    }        //database.deleteAll(FormatData.RadioMetaData)
 }
 
 

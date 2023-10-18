@@ -1,10 +1,9 @@
 package jdbchttpsql.data
 
-import jdbchttpsql.sources.Sources
+import jdbchttpsql.sources.SqlSources
 import org.ktorm.database.Database
 import org.ktorm.logging.ConsoleLogger
 import org.ktorm.logging.LogLevel
-import javax.xml.transform.Source
 
 /** Gets the database connection arguments and initializes the database connection as Singleton Object.
  * @author Jeremiah Boothe
@@ -15,10 +14,10 @@ import javax.xml.transform.Source
  */
 object DatabaseConnector{
 
-    private val source: String = Sources().getUrl()
-    private val driver: String = Sources().getDriver()
-    private val user: String = Sources().getUser()
-    private val password: String = Sources().getPassword()
+    private val source: String = SqlSources().getUrl()
+    private val driver: String = SqlSources().getDriver()
+    private val user: String = SqlSources().getUser()
+    private val password: String = SqlSources().getPassword()
 
     val databaseConnection = Database.connect(
         url = source,

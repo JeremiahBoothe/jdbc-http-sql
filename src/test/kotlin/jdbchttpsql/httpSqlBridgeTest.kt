@@ -9,7 +9,7 @@ class httpSqlBridgeTest {
     @Test
     fun testSLERadio() {
         SLERADIO.sleRadio().toString()
-        println("${SLERADIO.sleRadio().toString()}")
+        println(SLERADIO.sleRadio().toString())
     }
 
 }

@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.7.21"
+    kotlin("jvm") version "1.9.0"
     kotlin("plugin.serialization") version "1.7.21"
 
     application
@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("bouncycastle:bcprov-jdk16:136")
     implementation("org.ktorm:ktorm-core:3.5.0")
     implementation("io.ktor:ktor-client-okhttp-jvm:2.3.5")
     implementation("io.ktor:ktor-client-cio-jvm:2.3.5")

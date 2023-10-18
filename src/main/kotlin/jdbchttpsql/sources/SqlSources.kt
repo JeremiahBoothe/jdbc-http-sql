@@ -1,8 +1,6 @@
 package jdbchttpsql.sources
 
-import io.ktor.http.*
-
-class Sources {
+class SqlSources {
 
     private val url: String = "jdbc:mysql://localhost:3306/sleradio"
     private val driver: String = "com.mysql.cj.jdbc.Driver"

@@ -9,11 +9,10 @@ import java.util.*
  *  @object [RadioMetaData]
  *  @constructor [MetaData]
  *  @see [RadioMetaData]
- *  @return something or other
+ *  @return nothing
  *
  */
 class FormatData {
-
     /**
      * Connect to a database using the specific connection arguments.
      *
