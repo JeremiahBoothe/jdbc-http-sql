@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.9.0"
-    kotlin("plugin.serialization") version "1.7.21"
+    kotlin("jvm") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.10"
 
     application
 }
@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("bouncycastle:bcprov-jdk16:136")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.76")
     implementation("org.ktorm:ktorm-core:3.5.0")
     implementation("io.ktor:ktor-client-okhttp-jvm:2.3.5")
     implementation("io.ktor:ktor-client-cio-jvm:2.3.5")
@@ -27,7 +27,7 @@ dependencies {
     implementation("io.ktor:ktor-client-serialization-jvm:2.3.5")
     implementation("io.ktor:ktor-client-logging-jvm:2.3.5")
     implementation("com.google.code.gson:gson:2.10")
-    implementation("mysql:mysql-connector-java:8.0.31")
+    implementation("com.mysql:mysql-connector-j:8.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
 
@@ -38,7 +38,7 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "18"
 }
 
 application {

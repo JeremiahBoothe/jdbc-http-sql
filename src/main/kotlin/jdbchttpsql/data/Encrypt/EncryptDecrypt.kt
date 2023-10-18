@@ -12,6 +12,7 @@ import javax.crypto.spec.SecretKeySpec
 /** starting point to encrypt/decrypt tokens/passwords/account info for social media logins and database access.
  * implementation from https://rrohaill.medium.com/aes-encryption-decryption-using-kotlin-7104e79f0f4d
  * uses BouncyCastle https://www.bouncycastle.org/
+ * implementation("org.bouncycastle:bcprov-jdk18on:1.76")
  */
 class EncryptDecrypt {
     /**
