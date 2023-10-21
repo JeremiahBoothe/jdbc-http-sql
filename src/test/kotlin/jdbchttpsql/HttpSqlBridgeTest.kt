@@ -3,7 +3,7 @@ package jdbchttpsql
 import jdbchttpsql.model.HttpSqlBridge
 import org.junit.jupiter.api.Test
 
-class httpSqlBridgeTest {
+class HttpSqlBridgeTest {
     val SLERADIO = HttpSqlBridge()
 
     @Test
