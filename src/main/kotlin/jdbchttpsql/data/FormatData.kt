@@ -58,7 +58,7 @@ class FormatData {
      * @param timestamp when the currently playing song was played to keep track of streams.
      * @see BaseTable
      */
-    object RadioMetaData : BaseTable<MetaData>("radio_jar_metadata_stream") {
+    object RadioMetaData : BaseTable<MetaData>("metadata") {
         val album = varchar("album")
         val sku = varchar("sku")
         val thumb = varchar("thumb")
@@ -84,4 +84,51 @@ class FormatData {
             guid = row[guid].orEmpty(),
             timestamp = row[timestamp].orEmpty(),)
     }
+
+
+    /* Setup for MongoDB
+
+        companion object {
+            private val collection: MongoCollection<Document> = /* Obtain your collection reference here */
+
+            fun insertMetaData(metaData: MetaData) {
+                val document = Document(
+                    mapOf(
+                        "album" to metaData.album,
+                        "sku" to metaData.sku,
+                        "thumb" to metaData.thumb,
+                        "artist" to metaData.artist,
+                        "title" to metaData.title,
+                        "played_show" to metaData.played_show,
+                        "buy_urls" to metaData.buy_urls,
+                        "info_urls" to metaData.info_urls,
+                        "duration" to metaData.duration,
+                        "guid" to metaData.guid,
+                        "timestamp" to metaData.timestamp
+                    )
+                )
+                collection.insertOne(document)
+            }
+
+            fun getMetaDataByGuid(guid: String): MetaData? {
+                val document = collection.find(Filters.eq("guid", guid)).first()
+                return document?.let {
+                    MetaData(
+                        album = it.getString("album"),
+                        sku = it.getString("sku"),
+                        thumb = it.getString("thumb"),
+                        artist = it.getString("artist"),
+                        title = it.getString("title"),
+                        played_show = it.getString("played_show"),
+                        buy_urls = it.getString("buy_urls"),
+                        info_urls = it.getString("info_urls"),
+                        duration = it.getString("duration"),
+                        guid = it.getString("guid"),
+                        timestamp = it.getString("timestamp")
+                    )
+                }
+            }
+        }*/
+
+
 }

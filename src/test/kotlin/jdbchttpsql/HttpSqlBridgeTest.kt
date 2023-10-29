@@ -1,7 +1,7 @@
 package jdbchttpsql
 
 import jdbchttpsql.model.HttpSqlBridge
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
 class HttpSqlBridgeTest {
     val SLERADIO = HttpSqlBridge()

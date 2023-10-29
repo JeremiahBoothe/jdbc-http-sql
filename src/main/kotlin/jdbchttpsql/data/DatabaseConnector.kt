@@ -1,6 +1,6 @@
 package jdbchttpsql.data
 
-import jdbchttpsql.sources.SqlSources
+import jdbchttpsql.sources.DatabaseSourceBuilder
 import org.ktorm.database.Database
 import org.ktorm.logging.ConsoleLogger
 import org.ktorm.logging.LogLevel
@@ -14,10 +14,10 @@ import org.ktorm.logging.LogLevel
  */
 object DatabaseConnector{
 
-    private val source: String = SqlSources().getUrl()
-    private val driver: String = SqlSources().getDriver()
-    private val user: String = SqlSources().getUser()
-    private val password: String = SqlSources().getPassword()
+    private val source: String = DatabaseSourceBuilder().getUrl()
+    private val driver: String = DatabaseSourceBuilder().getDriver()
+    private val user: String = DatabaseSourceBuilder().getUser()
+    private val password: String = DatabaseSourceBuilder().getPassword()
 
     val databaseConnection = Database.connect(
         url = source,
@@ -26,4 +26,12 @@ object DatabaseConnector{
         password = password,
         logger = ConsoleLogger(threshold = LogLevel.INFO),
     )
+
+    /** to be built dynamically
+     *     val dataBaseConnector = DatabaseConnectionBuilder.Builder()
+     *         .connection("")
+     *         .post("")
+     *         .build()
+     *
+     */
 }

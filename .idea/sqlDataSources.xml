@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="7614f609-b0c1-46e9-8152-8420847d301a" name="JBTestQL@192.168.1.185 Mapping">
+      <data-sources db="bc0aedfa-0da8-4171-a099-f4fa1d8439bf" ddl="5063561e-0c3d-4e0d-9b04-fc6f930a927c" />
+      <scope>
+        <node kind="database" negative="1" />
+      </scope>
+    </mapping>
+  </component>
+</project>

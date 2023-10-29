@@ -1,11 +1,11 @@
 package jdbchttpsql
 
+import jdbchttpsql.data.DatabaseConnectionBuilder
 import jdbchttpsql.data.SocialMediaBuilder
 import jdbchttpsql.model.HttpSqlBridge
 
-
 //TODO: Args - command line arguments for one time configuration.
-fun main(Args: Array<String>) {
+fun Array<String>.main() {
 
 
     val socialMediaPost = SocialMediaBuilder.Builder()
@@ -13,14 +13,14 @@ fun main(Args: Array<String>) {
         .post("randomly generated")
         .build()
 
-    fun runSLE() {
-        val httpSqlBridge = HttpSqlBridge()
-        var x = 1
-        while (x != 2) {
-            httpSqlBridge.sleRadio()
-        }
-    }
-
     val runSLE = runSLE()
     return runSLE
+}
+
+fun runSLE() {
+    val httpSqlBridge = HttpSqlBridge()
+    val x = 1
+    while (x != 2) {
+        httpSqlBridge.sleRadio()
+    }
 }

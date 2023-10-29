@@ -2,6 +2,7 @@ package jdbchttpsql.model
 
 import jdbchttpsql.repository.HttpRequests
 import jdbchttpsql.repository.InsertMethods
+import jdbchttpsql.repository.MongoDBRequests
 import jdbchttpsql.repository.SQLQueries
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -13,6 +14,7 @@ class HttpSqlBridge {
         val insertMethods = InsertMethods()
         val httpRequests = HttpRequests()
         val databaseConnector = SQLQueries().database
+        val mongoDatabaseConnector = MongoDBRequests().database
         /** Connect to database, same instance as SQLQueries()
       takes Json data from http and implements it in sql entry*/
         var recursionVariable = 1
