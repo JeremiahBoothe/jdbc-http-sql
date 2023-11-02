@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.owasp:dependency-check-core:8.4.2" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.owasp" artifactId="dependency-check-core" version="8.4.2" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.owasp/dependency-check-core/8.4.2/b0850ad50965758a8a88c3ca304a60e300c3115/dependency-check-core-8.4.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.owasp/dependency-check-core/8.4.2/714ea65dc2da5695e47ace21b9509bda4b6c6857/dependency-check-core-8.4.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

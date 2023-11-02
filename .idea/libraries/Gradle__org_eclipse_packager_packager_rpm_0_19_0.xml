@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.eclipse.packager:packager-rpm:0.19.0" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.eclipse.packager" artifactId="packager-rpm" version="0.19.0" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.packager/packager-rpm/0.19.0/fd59d3de5d77cf2ac49a808eb60a9b1d28853769/packager-rpm-0.19.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.packager/packager-rpm/0.19.0/8af32884ae1964539bb347e929d0d10af20e0c35/packager-rpm-0.19.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

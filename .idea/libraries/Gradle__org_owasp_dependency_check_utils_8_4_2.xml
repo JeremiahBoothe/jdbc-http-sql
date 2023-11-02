@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.owasp:dependency-check-utils:8.4.2" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.owasp" artifactId="dependency-check-utils" version="8.4.2" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.owasp/dependency-check-utils/8.4.2/7531e19317c6bd997eb78123ebbe2e2e4cb6eb31/dependency-check-utils-8.4.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.owasp/dependency-check-utils/8.4.2/fc66a5984fd56fba403d742216cb066b9ef714f8/dependency-check-utils-8.4.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

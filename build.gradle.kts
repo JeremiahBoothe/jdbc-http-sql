@@ -1,8 +1,10 @@
+
 plugins {
     kotlin("jvm") version "1.9.10"
     kotlin("plugin.serialization") version "1.9.10"
-    //kotlin("plugin.lombok") version "1.9.10"
-    //id("io.freefair.lombok") version "8.1.0"
+    kotlin("plugin.lombok") version "1.9.10"
+    id("io.freefair.lombok") version "8.1.0"
+    id("org.owasp.dependencycheck") version "8.4.2"
     java
     `jvm-test-suite`
     application
@@ -18,9 +20,30 @@ repositories {
 
 dependencies {
     // Tests
+
+    //testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
+    implementation("org.owasp:dependency-check-gradle:8.4.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(kotlin("test"))
+
+    implementation("com.h2database:h2") {
+        version {
+            strictly("2.2.224")
+        }
+    }
+
+    modules {
+        module("commons-collections:commons-collections"){
+            replacedBy("org.apache.commons:commons-collections4")
+        }
+    }
+
+    implementation("org.apache.commons:commons-collections4") {
+        version{
+            strictly("4.4")
+        }
+    }
 
 
     implementation("org.slf4j:slf4j-simple:2.0.9")
@@ -50,7 +73,6 @@ dependencies {
 
 }
 
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -60,8 +82,6 @@ java {
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
-
-
 
 kotlin {
     jvmToolchain(17)

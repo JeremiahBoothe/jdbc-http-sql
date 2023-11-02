@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.sonatype.ossindex:ossindex-service-client:1.8.2" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.sonatype.ossindex" artifactId="ossindex-service-client" version="1.8.2" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.sonatype.ossindex/ossindex-service-client/1.8.2/3fc65bd57dbdfd40b62424feb22949095b20e4d0/ossindex-service-client-1.8.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.sonatype.ossindex/ossindex-service-client/1.8.2/a00a03dc56fc0f684c3aefbecd4d7c13034b504d/ossindex-service-client-1.8.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

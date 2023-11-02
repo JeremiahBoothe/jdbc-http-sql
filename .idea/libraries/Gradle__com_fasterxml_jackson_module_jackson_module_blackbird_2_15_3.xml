@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.fasterxml.jackson.module:jackson-module-blackbird:2.15.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.fasterxml.jackson.module" artifactId="jackson-module-blackbird" version="2.15.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-blackbird/2.15.3/289c91afce6ff28b6426cfe1bde6c6d4beb9a023/jackson-module-blackbird-2.15.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-blackbird/2.15.3/2f1a5f7b91d6e7a9c34a11b761a0bc14ebae7e65/jackson-module-blackbird-2.15.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

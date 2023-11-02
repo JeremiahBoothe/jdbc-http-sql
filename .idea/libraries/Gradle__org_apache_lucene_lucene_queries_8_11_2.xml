@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.lucene:lucene-queries:8.11.2" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.apache.lucene" artifactId="lucene-queries" version="8.11.2" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/8.11.2/c86c8bbd6dddfb6870fc2f59989cb89d50290d5a/lucene-queries-8.11.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/8.11.2/284d184a7e2b5c71cce0a7c6d0e7d147aea4adbb/lucene-queries-8.11.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

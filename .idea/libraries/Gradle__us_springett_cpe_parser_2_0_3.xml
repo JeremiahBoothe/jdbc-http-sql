@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: us.springett:cpe-parser:2.0.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="us.springett" artifactId="cpe-parser" version="2.0.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/us.springett/cpe-parser/2.0.3/184aa928877579ae816135cdd9f35a4f795c03f4/cpe-parser-2.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/us.springett/cpe-parser/2.0.3/8bcfdbaa7ade36cf0d53c074b4b3a76aaec2e918/cpe-parser-2.0.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
