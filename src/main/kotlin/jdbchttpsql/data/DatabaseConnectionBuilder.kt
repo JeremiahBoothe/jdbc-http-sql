@@ -2,20 +2,19 @@ package jdbchttpsql.data
 
 class DatabaseConnectionBuilder
 private constructor(
-        val connection: String? = null,
-        val post: String? = null,) {
+        private val connection: String? = null,
+        private val post: String? = null,) {
 
         data class Builder(
-            var connection: String? = null,
-            var post: String? = null,
+            private var connection: String? = null,
+            private var post: String? = null,
         ) {
             fun connection(connection: String) = apply { this.connection = connection }
             fun post(post: String) = apply { this.post = post }
             fun build() = DatabaseConnectionBuilder(connection, post)
 
             /**
-             * Potentially random building, I don't know what purpose there would be to randomize the connection
-             * just more a demonstration of possibilities.
+             * RandomBuild, to test functionality with multiple connections randomly.
              */
             fun randomBuild() = connection(connection ?: "random")
                 .connection(connection ?: "connection")
