@@ -5,6 +5,7 @@ plugins {
     kotlin("plugin.lombok") version "1.9.10"
     id("io.freefair.lombok") version "8.1.0"
     id("org.owasp.dependencycheck") version "8.4.2"
+    //id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
     java
     `jvm-test-suite`
     application
@@ -70,12 +71,13 @@ dependencies {
     implementation("org.mongodb:bson-kotlin:4.11.0")
 
     implementation("com.mysql:mysql-connector-j:8.2.0")
+    implementation("app.pieces.pieces-os-client:pieces-os-client:1.0.0")
 
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(20)
     }
 }
 
@@ -84,7 +86,7 @@ tasks.withType<Test>().configureEach {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(20)
 }
 
 application {
