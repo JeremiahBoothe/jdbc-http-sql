@@ -54,7 +54,7 @@ dependencies {
 
     implementation("org.ktorm:ktorm-core:3.5.0")
 
-    implementation("io.ktor:ktor-client-okhttp-jvm:2.3.5")
+    //implementation("io.ktor:ktor-client-okhttp-jvm:2.3.5")
     implementation("io.ktor:ktor-client-cio-jvm:2.3.5")
     implementation("io.ktor:ktor-client-auth-jvm:2.3.5")
     implementation("io.ktor:ktor-server-auth-jvm:2.3.5")
@@ -71,7 +71,7 @@ dependencies {
     implementation("org.mongodb:bson-kotlin:4.11.0")
 
     implementation("com.mysql:mysql-connector-j:8.2.0")
-    implementation("app.pieces.pieces-os-client:pieces-os-client:1.0.0")
+    //implementation("app.pieces.pieces-os-client:pieces-os-client:1.0.0")
 
 }
 
