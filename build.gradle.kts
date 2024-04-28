@@ -7,7 +7,7 @@ plugins {
     id("org.owasp.dependencycheck") version "8.4.2"
     //id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
     java
-    `jvm-test-suite`
+    id("jvm-test-suite")
     application
 }
 
@@ -71,8 +71,7 @@ dependencies {
     implementation("org.mongodb:bson-kotlin:4.11.0")
 
     implementation("com.mysql:mysql-connector-j:8.2.0")
-    //implementation("app.pieces.pieces-os-client:pieces-os-client:1.0.0")
-
+    implementation("app.pieces.pieces-os-client:pieces-os-client:1.2.2")
 }
 
 java {
