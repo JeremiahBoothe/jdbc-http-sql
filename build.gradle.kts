@@ -76,7 +76,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(20)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -85,7 +85,7 @@ tasks.withType<Test>().configureEach {
 }
 
 kotlin {
-    jvmToolchain(20)
+    jvmToolchain(17)
 }
 
 application {
