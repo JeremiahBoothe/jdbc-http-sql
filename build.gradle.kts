@@ -1,10 +1,10 @@
 
 plugins {
-    kotlin("jvm") version "1.9.10"
-    kotlin("plugin.serialization") version "1.9.10"
-    kotlin("plugin.lombok") version "1.9.10"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.20"
+    kotlin("plugin.lombok") version "1.9.20"
     id("io.freefair.lombok") version "8.1.0"
-    id("org.owasp.dependencycheck") version "8.4.2"
+    id("org.owasp.dependencycheck") version "10.0.4"
     //id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
     java
     id("jvm-test-suite")
@@ -23,8 +23,8 @@ dependencies {
     // Tests
 
     //testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
-    implementation("org.owasp:dependency-check-gradle:8.4.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    //implementation("org.owasp:dependency-check-gradle:10.0.4")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(kotlin("test"))
 
@@ -53,12 +53,16 @@ dependencies {
     implementation("org.bouncycastle:bcprov-jdk18on:1.76")
 
     implementation("org.ktorm:ktorm-core:3.5.0")
-
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("io.ktor:ktor-client-core:2.3.5") // Ensure you're using the latest version
     //implementation("io.ktor:ktor-client-okhttp-jvm:2.3.5")
     implementation("io.ktor:ktor-client-cio-jvm:2.3.5")
     implementation("io.ktor:ktor-client-auth-jvm:2.3.5")
     implementation("io.ktor:ktor-server-auth-jvm:2.3.5")
     implementation("io.ktor:ktor-client-json-jvm:2.3.5")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5") // Kotlinx JSON
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
     implementation("io.ktor:ktor-client-serialization-jvm:2.3.5")
     implementation("io.ktor:ktor-client-logging-jvm:2.3.5")
 
@@ -71,7 +75,7 @@ dependencies {
     implementation("org.mongodb:bson-kotlin:4.11.0")
 
     implementation("com.mysql:mysql-connector-j:8.2.0")
-    implementation("app.pieces.pieces-os-client:pieces-os-client:1.2.2")
+    //implementation("app.pieces.pieces-os-client:pieces-os-client:1.2.2")
 }
 
 java {
