@@ -30,17 +30,17 @@ class FormatData {
      * @return the new-created database object.
      */
     data class MetaData(
-        val album: String,
-        val sku: String,
-        val thumb: String,
-        val artist: String,
-        val title: String,
-        val played_show: String,
-        val buy_urls: String,
-        val info_urls: String,
-        val duration: String,
+        val album: String?,
+        val sku: String?,
+        val thumb: String?,
+        val artist: String?,
+        val title: String?,
+        val played_show: String?,
+        val buy_urls: String?,
+        val info_urls: String?,
+        val duration: String?,
         val guid: String,
-        val timestamp: String,)
+        val timestamp: String?,)
 
     /**
      * Maps data class to BaseTable

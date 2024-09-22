@@ -20,18 +20,18 @@ class EncryptDecrypt {
      */
     val secretKey: String = "662ede816988e58fb6d057d9d85605e0"
 
-    fun encrypt(strToEncrypt: String, secret_key: String): String? {
+    fun String.encrypt(strToEncrypt: String): String? {
         Security.addProvider(BouncyCastleProvider())
         var keyBytes: ByteArray
 
         try {
-            keyBytes = secret_key.toByteArray(charset("UTF8"))
-            val skey = SecretKeySpec(keyBytes, "AES")
+            keyBytes = toByteArray(charset("UTF8"))
+            val sKey = SecretKeySpec(keyBytes, "AES")
             val input = strToEncrypt.toByteArray(charset("UTF8"))
 
             synchronized(Cipher::class.java) {
                 val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
-                cipher.init(Cipher.ENCRYPT_MODE, skey)
+                cipher.init(Cipher.ENCRYPT_MODE, sKey)
 
                 val cipherText = ByteArray(cipher.getOutputSize(input.size))
                 var ctLength = cipher.update(
@@ -69,7 +69,7 @@ class EncryptDecrypt {
         try {
             keyBytes = key.toByteArray(charset("UTF8"))
             val skey = SecretKeySpec(keyBytes, "AES")
-            val input = org.bouncycastle.util.encoders.Base64
+            val input = Base64
                 .decode(strToDecrypt?.trim { it <= ' ' }?.toByteArray(charset("UTF8")))
 
             synchronized(Cipher::class.java) {

@@ -1,6 +1,7 @@
 package jdbchttpsql.repository
 
 import jdbchttpsql.data.FormatData
+import jdbchttpsql.data.FormatData.*
 import org.ktorm.dsl.insert
 import java.time.LocalDateTime
 
@@ -16,40 +17,32 @@ class InsertMethods {
     it then adds the entry and continues to skip try because the entry now exists*/
 
     fun insertSLERadio() {
-        if (FormatData.RadioMetaData.guid != null) {
-            try {
-                database.useTransaction {
-                    database.insert(FormatData.RadioMetaData) {
-                        set(FormatData.RadioMetaData.album, "${td.album}")
-                        set(FormatData.RadioMetaData.sku, "${td.sku}")
-                        set(FormatData.RadioMetaData.thumb, "${td.thumb}")
-                        set(FormatData.RadioMetaData.artist, "${td.artist}")
-                        set(FormatData.RadioMetaData.title, "${td.title}")
-                        set(FormatData.RadioMetaData.played_show, "${td.played_show}")
-                        set(FormatData.RadioMetaData.buy_urls, "${td.buy_urls}")
-                        set(FormatData.RadioMetaData.info_urls, "${td.info_urls}")
-                        set(FormatData.RadioMetaData.duration, "${td.duration}")
-                        set(FormatData.RadioMetaData.guid, "${td.guid}")
-                        set(FormatData.RadioMetaData.timestamp, "${localtime}")
-                    }
+        try {
+            database.useTransaction {
+                database.insert(RadioMetaData) {
+                    set(RadioMetaData.album, td.album)
+                    set(RadioMetaData.sku, td.sku)
+                    set(RadioMetaData.thumb, td.thumb)
+                    set(RadioMetaData.artist, td.artist)
+                    set(RadioMetaData.title, td.title)
+                    set(RadioMetaData.played_show, td.played_show)
+                    set(RadioMetaData.buy_urls, td.buy_urls)
+                    set(RadioMetaData.info_urls, td.info_urls)
+                    set(RadioMetaData.duration, td.duration)
+                    set(RadioMetaData.guid, td.guid)
+                    set(RadioMetaData.timestamp, "$localtime")
                 }
-                println("Entry Added!")
-                return
-            } catch (e: Exception) {
-                println("Exceptions!!!")
-                return
-            } catch (e: StackOverflowError) {
-                println("StackOverflowError")
-                return
-            } finally {
-                println(td)
-                println("${localtime}")
-                println("Always prints(finally)")
-                return
             }
-        } else {
-            println("OrElse!")
-            return
+            println("Entry Added!")
+        } catch (e: Exception) {
+            println("Exceptions!!!")
+        } catch (e: StackOverflowError) {
+            println("StackOverflowError")
+
+        } finally {
+            println(td)
+            println("$localtime")
+            println("Always prints(finally)")
         }
     }
     /*

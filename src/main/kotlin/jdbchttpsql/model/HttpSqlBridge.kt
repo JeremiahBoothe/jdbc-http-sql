@@ -28,6 +28,7 @@ class HttpSqlBridge {
             launch(Dispatchers.IO) {
                 fun insertStuff() {
                     insertMethods.insertSLERadio()
+
                 }; while (recursionVariable != 3) {
                 try {
                     delay(1000)

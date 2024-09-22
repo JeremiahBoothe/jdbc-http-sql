@@ -7,8 +7,8 @@ package jdbchttpsql.data
  *
  */
 class SocialMediaBuilder private constructor(
-    val connection: String? = null,
-    val post: String? = null,) {
+    private val connection: String? = null,
+    private val post: String? = null,) {
 
     data class Builder(
         var connection: String? = null,

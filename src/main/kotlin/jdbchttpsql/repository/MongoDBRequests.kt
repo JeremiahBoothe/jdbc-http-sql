@@ -4,37 +4,44 @@ import com.google.gson.Gson
 import com.mongodb.kotlin.client.MongoClient
 import com.mongodb.kotlin.client.MongoCollection
 import com.mongodb.kotlin.client.MongoDatabase
-import jdbchttpsql.data.FormatDataMongoDB
+import jdbchttpsql.data.FormatData
 import org.bson.Document
-import java.net.URL
 
 class MongoDBRequests {
-
-    private val webPage = URL("https://www.radiojar.com/api/stations/2z8y97h1v8quv/now_playing/")
-    private val gson = Gson()
-    private val data = webPage.readText()
 
     // Connect to MongoDB (adjust connection string accordingly)
     private val mongoClient = MongoClient.create("mongodb://192.168.1.185:27017")
     val database: MongoDatabase = mongoClient.getDatabase("JBTestQL")
     private val collection: MongoCollection<Document> = database.getCollection("TestCollection")
 
-    private val mongoDbFormat: FormatDataMongoDB = FormatDataMongoDB(collection)
-    // Convert Gson data to BSON and insert into MongoDB
-    val td: Document = Document.parse(gson.toJson(collection))
+    private val gson = Gson()
 
-    //collection.insertOne(td)
+    // Create the MongoDB collection based on the data class schema
+    fun createCollection() {
+        // Here you can implement logic to ensure the collection is created
+        // or modify the existing one based on the schema if necessary.
+    }
 
-    /*
-        // If you want to retrieve data from MongoDB
-        val cursor = collection.find(yourFilterHere)
-        for (document in cursor) {
-            // Process each BSON document
-            val metaData = gson.fromJson(document.toJson(), FormatData.MetaData::class.java)
-            // Do something with metaData
-        }
-    */
+    // Insert metadata into MongoDB
+    fun insertMetaData(metaData: FormatData.MetaData) {
+        val document = Document(mapOf(
+            "album" to metaData.album,
+            "sku" to metaData.sku,
+            "thumb" to metaData.thumb,
+            "artist" to metaData.artist,
+            "title" to metaData.title,
+            "played_show" to metaData.played_show,
+            "buy_urls" to metaData.buy_urls,
+            "info_urls" to metaData.info_urls,
+            "duration" to metaData.duration,
+            "guid" to metaData.guid,
+            "time_stamp" to metaData.timestamp
+        ))
+        collection.insertOne(document)
+    }
 
     // Close MongoDB client when done
-    //mongoClient.close()
+    fun close() {
+        mongoClient.close()
+    }
 }

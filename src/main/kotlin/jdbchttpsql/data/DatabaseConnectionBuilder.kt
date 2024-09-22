@@ -9,9 +9,9 @@ private constructor(
             private var connection: String? = null,
             private var post: String? = null,
         ) {
-            fun connection(connection: String) = apply { this.connection = connection }
-            fun post(post: String) = apply { this.post = post }
-            fun build() = DatabaseConnectionBuilder(connection, post)
+            private fun connection(connection: String) = apply { this.connection = connection }
+            private fun post(post: String) = apply { this.post = post }
+            private fun build() = DatabaseConnectionBuilder(connection, post)
 
             /**
              * RandomBuild, to test functionality with multiple connections randomly.

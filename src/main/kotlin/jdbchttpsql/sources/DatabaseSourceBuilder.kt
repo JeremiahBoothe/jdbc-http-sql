@@ -1,15 +1,16 @@
 package jdbchttpsql.sources
 
+import jdbchttpsql.UserInfo
+
 class DatabaseSourceBuilder {
 
     private val urlDriver: String = "jdbc:mysql://"
-    //private val url: String = "jdbc:mysql://localhost:3306/sleradio"
-    private val ipAddress: String = "192.168.1.185"
-    private val targetDatabase: String = "/ktorm"
-    private val url: String = urlDriver + ipAddress + targetDatabase
+    private val ipAddress: String = "192.168.1.185:3306"
+    private val targetDatabase: String = "JBTestQL"
+    private val url: String = "$urlDriver$ipAddress/$targetDatabase"
     private val driver: String = "com.mysql.cj.jdbc.Driver"
-    private val user: String = "JBTestQL"
-    private val password: String = "test"
+    private val user: String = "jeremiah"
+    private var password: String = UserInfo().password
 
     fun getUrl(): String {
         return url
@@ -22,8 +23,8 @@ class DatabaseSourceBuilder {
     fun getUser(): String {
         return user
     }
+
     fun getPassword(): String {
         return password
     }
-
 }
