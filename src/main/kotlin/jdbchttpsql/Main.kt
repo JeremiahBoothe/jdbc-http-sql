@@ -1,89 +1,41 @@
 package jdbchttpsql
 
-import jdbchttpsql.data.DatabaseConnector
-import jdbchttpsql.data.FormatData
-import jdbchttpsql.data.SocialMediaBuilder
-import jdbchttpsql.model.HttpSqlBridge
+import jdbchttpsql.repository.SQLQueries
 import jdbchttpsql.repository.MongoDBRequests
-import org.ktorm.database.Database
-import java.sql.SQLException
+import jdbchttpsql.model.HttpDatabaseBridge
+import kotlinx.coroutines.delay
+import org.slf4j.LoggerFactory
 
-// Main function
-fun Array<String>.main() {
-    // Initialize the database connection
-    val database = DatabaseConnector.databaseConnection
-    createTables(database)  // Create the SQL table
+suspend fun main() {
+    val logger = LoggerFactory.getLogger("Main")
+    val sqlQueries = SQLQueries() // Initialize SQLQueries
+    sqlQueries.createTables() // Create tables if they do not exist
 
-    // Initialize MongoDB requests
-    val mongoDBRequests = MongoDBRequests()
-    mongoDBRequests.createCollection()  // Create the MongoDB collection
+    //val mongoDBRequests = MongoDBRequests() // Initialize MongoDBRequests
+    //val bridge = HttpDatabaseBridge(sqlQueries, mongoDBRequests)
 
-    // Example of inserting metadata into MongoDB
-    val sampleMetaData = FormatData.MetaData(
-        album = "Sample Album",
-        sku = "SKU123",
-        thumb = "http://example.com/thumb.jpg",
-        artist = "Sample Artist",
-        title = "Sample Title",
-        played_show = "Sample Show",
-        buy_urls = "http://example.com/buy",
-        info_urls = "http://example.com/info",
-        duration = "3:30",
-        guid = "GUID123",
-        timestamp = "2023-09-21T12:00:00Z"
-    )
-
-    mongoDBRequests.insertMetaData(sampleMetaData) // Insert sample metadata
-
-    val socialMediaPost = SocialMediaBuilder.Builder()
-        .connection("Blue Sky")
-        .post("randomly generated")
-        .build()
-
-    runSLE()
-
-    // Close MongoDB connection
-    mongoDBRequests.close()
-}
-
-fun createTables(database: Database) {
-    database.useConnection { connection ->
-        val createTableSQL = StringBuilder("""
-            CREATE TABLE IF NOT EXISTS metadata (
-                album VARCHAR(255),
-                sku VARCHAR(255),
-                thumb VARCHAR(255),
-                artist VARCHAR(255),
-                title VARCHAR(255),
-                played_show VARCHAR(255),
-                buy_urls VARCHAR(255),
-                info_urls VARCHAR(255),
-                duration VARCHAR(255),
-                guid VARCHAR(255) PRIMARY KEY,
-                time_stamp VARCHAR(255)
-            );
-        """.trimIndent())
+    while (true) {
 
         try {
-            connection.createStatement().use { statement ->
-                statement.execute(createTableSQL.toString())
-            }
+            val mongoDBRequests = MongoDBRequests() // Initialize MongoDBRequests
+            val bridge = HttpDatabaseBridge(sqlQueries, mongoDBRequests)
+            logger.info("Starting the process to fetch and store song data...")
+            bridge.processSongData() // Fetch and store song data
+            logger.info("Process completed.")
+            // The closing resources code will not be reached in this infinite loop
+            // You may want to implement a way to exit the loop gracefully
+            logger.info("Closing resources...")
+            bridge.close() // Close the Ktor client when done
+            mongoDBRequests.close() // Close MongoDB requests
+            //sqlQueries.close() // Close SQL queries if applicable
         } catch (e: Exception) {
-            throw RuntimeException("Failed to execute SQL: ${e.message}", e)
-        } catch (e: SQLException) {
-            // Log SQL specific errors
-            println("SQL error: ${e.message}")
-        } catch (e: Exception) {
-            // Log unexpected errors
-            println("Unexpected error: ${e.message}")
+            logger.error("An error occurred during the process: ${e.message}", e)
+            delay(1000) // Wait before retrying
         }
-    }
-}
 
-fun runSLE() {
-    val httpSqlBridge = HttpSqlBridge()
-    while (true) {
-        httpSqlBridge.sleRadio()
-        // Add logic to break the loop if needed
+        // Optionally add a delay before the next iteration to prevent rapid looping
+        delay(5000) // Delay before the next cycle (5 seconds, adjust as needed)
     }
+
+
 }

@@ -55,6 +55,7 @@ dependencies {
         }
     }
 
+    val ktorVersion = "2.3.12"
 
     implementation("org.slf4j:slf4j-simple:2.0.9")
     testImplementation("org.slf4j:slf4j-api:2.0.9")
@@ -64,16 +65,18 @@ dependencies {
     implementation("org.ktorm:ktorm-core:4.1.1")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation("io.ktor:ktor-client-core:2.3.5") // Ensure you're using the latest version
-    implementation("io.ktor:ktor-client-okhttp-jvm:2.3.12")
-    implementation("io.ktor:ktor-client-cio-jvm:2.3.12")
-    implementation("io.ktor:ktor-client-auth-jvm:2.3.12")
-    implementation("io.ktor:ktor-server-auth-jvm:2.3.12")
-    implementation("io.ktor:ktor-client-json-jvm:2.3.12")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.12") // Kotlinx JSON
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.12")
-    implementation("io.ktor:ktor-client-serialization-jvm:2.3.12")
-    implementation("io.ktor:ktor-client-logging-jvm:2.3.12")
+    implementation("io.ktor:ktor-client-core:$ktorVersion") // Ensure you're using the latest version
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-client-json:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-gson:$ktorVersion") // Gson for se
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion") // Kotlinx JSON
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
+
 
     implementation("com.google.code.gson:gson:2.11.0")
 

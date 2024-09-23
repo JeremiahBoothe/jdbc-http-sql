@@ -1,10 +1,10 @@
 package jdbchttpsql
 
-import jdbchttpsql.model.HttpSqlBridge
+import jdbchttpsql.model.HttpDatabaseBridge
 import kotlin.test.Test
 
-class HttpSqlBridgeTest {
-    val SLERADIO = HttpSqlBridge()
+class HttpDatabaseBridgeTest {
+    val SLERADIO = HttpDatabaseBridge()
 
     @Test
     fun testSLERadio() {
