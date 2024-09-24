@@ -1,5 +1,7 @@
 package jdbchttpsql.repository
 
+import com.mongodb.ConnectionString
+import com.mongodb.MongoClientSettings
 import com.mongodb.kotlin.client.MongoClient
 import com.mongodb.kotlin.client.MongoCollection
 import com.mongodb.kotlin.client.MongoDatabase
@@ -11,9 +13,19 @@ class MongoDBRequests {
     private val logger = LoggerFactory.getLogger(MongoDBRequests::class.java)
 
     // MongoDB client and database initialization
-    private val mongoClient: MongoClient = MongoClient.create("mongodb://192.168.1.185:27017")
-    private val database: MongoDatabase = mongoClient.getDatabase("JBTestQL")
+    val settings: MongoClientSettings = MongoClientSettings.builder()
+        .applyConnectionString(ConnectionString("mongodb://192.168.1.185:27017"))
+        .applyToConnectionPoolSettings { builder ->
+            builder.minSize(2) // Minimum number of connections
+            builder.maxSize(10) // Maximum number of connections
+        }
+        .build()
+
+    private val mongoClient: MongoClient = MongoClient.create(settings)
+    //private val mongoClient: MongoClient = MongoClient.create("mongodb://192.168.1.185:27017")
+    private var database: MongoDatabase = mongoClient.getDatabase("JBTestQL")
     private val collection: MongoCollection<Document> = database.getCollection("metadata")
+
     // Ensure collection exists (optional, as MongoDB creates it on first insert)
     fun ensureCollectionExists() {
         // MongoDB creates the collection automatically when you perform the first insert

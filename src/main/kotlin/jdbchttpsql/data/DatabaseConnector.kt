@@ -12,7 +12,7 @@ import org.ktorm.logging.LogLevel
  * @property [user] User Name for database login.
  * @property [password] User Password for database login.
  */
-object DatabaseConnector{
+object DatabaseConnector {
 
     private val source: String = DatabaseSourceBuilder().getUrl()
     private val driver: String = DatabaseSourceBuilder().getDriver()
