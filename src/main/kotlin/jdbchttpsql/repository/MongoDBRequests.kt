@@ -15,7 +15,7 @@ class MongoDBRequests {
     private val database: MongoDatabase = mongoClient.getDatabase("JBTestQL")
     private val collection: MongoCollection<Document> = database.getCollection("metadata")
     // Ensure collection exists (optional, as MongoDB creates it on first insert)
-    suspend fun ensureCollectionExists() {
+    fun ensureCollectionExists() {
         // MongoDB creates the collection automatically when you perform the first insert
         // But you can verify if needed:
         if (collection.countDocuments() == 0L) {
@@ -23,16 +23,15 @@ class MongoDBRequests {
         }
     }
     // Insert SongData directly into MongoDB
-    suspend fun insertSongData(songData: SongData) {
+    fun insertSongData(songData: SongData.SongData) {
         requireNotNull(songData.id) { "Song ID cannot be null." }
-        requireNotNull(songData.title) { "Song title cannot be null." }
 
         val document = Document(
             mapOf(
                 "_id" to songData.id,
                 "title" to songData.title,
                 "album" to songData.album,
-                "artist" to songData.artist.name,
+                "artist" to songData.artist?.name,
                 "length" to songData.length,
                 "genre" to songData.genre,
                 "releaseyear" to songData.releaseyear,
@@ -44,6 +43,7 @@ class MongoDBRequests {
 
         try {
             collection.insertOne(document)
+            println("Entry Added MongoDB!")
             logger.info("SongData inserted successfully into MongoDB.")
         } catch (e: Exception) {
             logger.error("Error inserting SongData: ${e.message}", e)

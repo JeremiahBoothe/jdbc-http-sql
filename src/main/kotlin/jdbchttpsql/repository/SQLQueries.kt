@@ -9,6 +9,9 @@ import org.ktorm.schema.int
 import org.ktorm.schema.text
 import org.slf4j.LoggerFactory
 import java.sql.SQLException
+import java.sql.Connection
+import java.sql.ResultSet
+import java.sql.Statement
 
 class SQLQueries {
     private val logger = LoggerFactory.getLogger(SQLQueries::class.java)
@@ -28,26 +31,27 @@ class SQLQueries {
     }
 
     // Establish a connection to the database
-    val database = DatabaseConnector.databaseConnection
+    private val database = DatabaseConnector.databaseConnection
+
+    // SQL statement for creating the table
+    private val createTableSQL = """
+        CREATE TABLE IF NOT EXISTS metadata (
+            id INT PRIMARY KEY,
+            title VARCHAR(255),
+            album VARCHAR(255),
+            artist VARCHAR(255),
+            length INT,
+            genre VARCHAR(255),
+            releaseyear INT,
+            created_at TEXT,
+            started_at TEXT,
+            ends_at TEXT
+        );
+    """.trimIndent()
 
     // Create the tables if they do not exist
     fun createTables() {
         database.useConnection { connection ->
-            val createTableSQL = """
-                CREATE TABLE IF NOT EXISTS metadata (
-                    id INT PRIMARY KEY,
-                    title VARCHAR(255),
-                    album VARCHAR(255),
-                    artist VARCHAR(255),
-                    length INT,
-                    genre VARCHAR(255),
-                    releaseyear INT,
-                    created_at TEXT,
-                    started_at TEXT,
-                    ends_at TEXT
-                );
-            """.trimIndent()
-
             try {
                 connection.createStatement().use { statement ->
                     statement.execute(createTableSQL)
@@ -61,12 +65,34 @@ class SQLQueries {
         }
     }
 
+    // Check if the table exists and log the result
+    suspend fun ensureTableExists() {
+        val tableName = "metadata"
+        val sqlCheckTableExists = "SELECT * FROM information_schema.tables WHERE table_name = '$tableName';"
+
+        try {
+            database.useConnection { conn ->
+                val statement: Statement = conn.createStatement()
+                val resultSet: ResultSet = statement.executeQuery(sqlCheckTableExists)
+
+                if (!resultSet.next()) {
+                    // The table does not exist, create it
+                    logger.info("Table '$tableName' does not exist, creating it.")
+                    createTables()
+                } else {
+                    logger.info("Table '$tableName' already exists.")
+                }
+            }
+        } catch (e: Exception) {
+            logger.error("Error ensuring table exists: ${e.message}", e)
+        }
+    }
+
     // Insert SongData directly into SQL
-    fun insertSongData(songData: SongData) {
+    fun insertSongData(songData: SongData.SongData) {
         try {
             // Validate songData before insertion
             requireNotNull(songData.id) { "Song ID cannot be null." }
-            requireNotNull(songData.title) { "Song title cannot be null." }
 
             database.useTransaction {
                 logger.info("Starting transaction for inserting song data.")
@@ -74,7 +100,7 @@ class SQLQueries {
                     set(SongTable.id, songData.id)
                     set(SongTable.title, songData.title)
                     set(SongTable.album, songData.album)
-                    set(SongTable.artist, songData.artist.name)
+                    set(SongTable.artist, songData.artist?.name)
                     set(SongTable.length, songData.length)
                     set(SongTable.genre, songData.genre ?: "") // Handle nullable genre
                     set(SongTable.releaseyear, songData.releaseyear)
@@ -83,6 +109,7 @@ class SQLQueries {
                     set(SongTable.endsAt, songData.ends_at)
                 }
                 logger.info("SongData inserted successfully into SQL.")
+                println("Entry Added SQL!")
             }
         } catch (e: SQLException) {
             logger.error("SQL error inserting SongData into SQL: ${e.message}", e)

@@ -24,7 +24,7 @@ class HttpDatabaseBridge(private val sqlQueries: SQLQueries, private val mongoDB
     }
     private val apiEndpoint = "https://api.laut.fm/station/radiotfsc/current_song"
 
-    private suspend fun fetchSongData(): SongData? {
+    suspend fun fetchSongData(): SongData.SongData? {
         return try {
             val response: HttpResponse = client.get(apiEndpoint)
             response.body()
@@ -37,7 +37,7 @@ class HttpDatabaseBridge(private val sqlQueries: SQLQueries, private val mongoDB
     suspend fun processSongData() {
         // Ensure MongoDB collection exists
         mongoDBRequests.ensureCollectionExists()
-
+        sqlQueries.ensureTableExists()
         repeat(repeatCount) {
             try {
                 val songData = fetchSongData()
@@ -45,7 +45,9 @@ class HttpDatabaseBridge(private val sqlQueries: SQLQueries, private val mongoDB
                     println("Fetched data: $songData")
                     withContext(Dispatchers.IO) {
                         sqlQueries.insertSongData(songData)
+                        println("SqlTableExists")
                         mongoDBRequests.insertSongData(songData)
+                        println("MongoDBTableExists")
                     }
                 } else {
                     println("No data to insert into databases.")
