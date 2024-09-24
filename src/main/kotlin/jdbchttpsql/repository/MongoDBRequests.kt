@@ -5,16 +5,27 @@ import com.mongodb.MongoClientSettings
 import com.mongodb.kotlin.client.MongoClient
 import com.mongodb.kotlin.client.MongoCollection
 import com.mongodb.kotlin.client.MongoDatabase
+import jdbchttpsql.data.ConnectionData
+import jdbchttpsql.data.MongoDBConnectionData
 import jdbchttpsql.data.SongData
 import org.bson.Document
+import org.ktorm.database.Database
 import org.slf4j.LoggerFactory
 
-class MongoDBRequests {
-    private val logger = LoggerFactory.getLogger(MongoDBRequests::class.java)
-
+/**
+ * This class handles operations related to MongoDB such as initializing the client,
+ * ensuring the collection exists, inserting data, and closing the client connection.
+ *
+ * @constructor Creates an instance of MongoDBRequests with the provided connection data.
+ * @param mongoDBConnectionData The connection data required to establish a connection to MongoDB.
+ */
+class MongoDBRequests
+internal constructor(private val mongoDBConnectionData: ConnectionData){
+    //private val logger = LoggerFactory.getLogger(MongoDBRequests::class.java)
+    private val logger = LoggerFactory.getLogger("MongoDBRequests")
     // MongoDB client and database initialization
     private val settings: MongoClientSettings = MongoClientSettings.builder()
-        .applyConnectionString(ConnectionString("mongodb://192.168.1.185:27017"))
+        .applyConnectionString(ConnectionString(mongoDBConnectionData.urlDriver + mongoDBConnectionData.ipAddress))
         .applyToConnectionPoolSettings { builder ->
             builder.minSize(2) // Minimum number of connections
             builder.maxSize(10) // Maximum number of connections
@@ -22,19 +33,33 @@ class MongoDBRequests {
         .build()
 
     private val mongoClient: MongoClient = MongoClient.create(settings)
-    //private val mongoClient: MongoClient = MongoClient.create("mongodb://192.168.1.185:27017")
-    private var database: MongoDatabase = mongoClient.getDatabase("JBTestQL")
+    private var database: MongoDatabase = mongoClient.getDatabase(mongoDBConnectionData.targetDatabase)
     private val collection: MongoCollection<Document> = database.getCollection("metadata")
 
-    // Ensure collection exists (optional, as MongoDB creates it on first insert)
+    /**
+     * Ensures that the specified MongoDB collection exists.
+     *
+     * This function checks the document count in the collection and logs a message
+     * indicating the creation of the collection if the count is zero.
+     */
     fun ensureCollectionExists() {
         // MongoDB creates the collection automatically when you perform the first insert
         // But you can verify if needed:
         if (collection.countDocuments() == 0L) {
-            println("Collection 'metadata' created.")
+            logger.info("Collection 'metadata' created.")
         }
     }
-    // Insert SongData directly into MongoDB
+
+    /**
+     * Inserts the given song data into the MongoDB collection.
+     *
+     * @param songData The song data to insert.
+     *
+     * @throws IllegalArgumentException if the song data ID is null.
+     *
+     * Logs an info message when the song data is successfully inserted.
+     * Logs an error message if an error occurs while inserting the data.
+     */
     fun insertSongData(songData: SongData.SongData) {
         requireNotNull(songData.id) { "Song ID cannot be null." }
 
@@ -55,15 +80,18 @@ class MongoDBRequests {
 
         try {
             collection.insertOne(document)
-            println("Entry Added MongoDB!")
             logger.info("SongData inserted successfully into MongoDB.")
         } catch (e: Exception) {
             logger.error("Error inserting SongData: ${e.message}", e)
-            logger.error("Failed SongData: $songData")
         }
     }
 
-    // Close MongoDB client
+    /**
+     * Closes the MongoDB client connection.
+     *
+     * This method attempts to close the connection to the MongoDB client and logs an informational message upon success.
+     * If an error occurs during the closure, it logs an error message with the exception details.
+     */
     fun close() {
         try {
             mongoClient.close()

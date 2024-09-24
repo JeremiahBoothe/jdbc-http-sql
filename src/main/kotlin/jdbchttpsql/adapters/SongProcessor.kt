@@ -1,10 +1,16 @@
-package jdbchttpsql
+package jdbchttpsql.adapters
 
 import jdbchttpsql.model.HttpDatabaseBridge
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-// SongProcessor: Responsible for fetching and processing song data.
+/**
+ * A class that handles the processing of song data, including fetching song data,
+ * updating target times, and logging relevant information.
+ *
+ * @property bridge An instance of `HttpDatabaseBridge` used for fetching and storing song data.
+ * @property logger An instance of `org.slf4j.Logger` for logging messages.
+ */
 class SongProcessor(private val bridge: HttpDatabaseBridge, private val logger: org.slf4j.Logger) {
     suspend fun processSongData(targetTime: ZonedDateTime, timeHandler: TimeHandler): ZonedDateTime {
         // Fetch song data and get its length

@@ -1,7 +1,9 @@
 package jdbchttpsql
 
-import jdbchttpsql.data.DatabaseConnector
-import jdbchttpsql.data.SleConnectionData
+import jdbchttpsql.adapters.MongoDBDatabaseConnector
+import jdbchttpsql.adapters.SQLDatabaseConnector
+import jdbchttpsql.data.MongoDBConnectionData
+import jdbchttpsql.data.SQLConnectionData
 import jdbchttpsql.repository.SQLQueries
 import jdbchttpsql.repository.MongoDBRequests
 import jdbchttpsql.model.HttpDatabaseBridge
@@ -12,32 +14,33 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.time.ZoneId
 
+/**
+ * Entry point for the application. This suspend function initializes database connectors, sets up logging,
+ * and enters an infinite loop to periodically fetch and process song data from an API.
+ *
+ * The function performs the following tasks:
+ * - Initializes SQL and MongoDB database connectors.
+ * - Sets up SQL queries and creates tables if they do not exist.
+ * - Sets an initial target time for synchronization.
+ * - Enters a loop where it:
+ *     - Waits for the calculated interval until the next target time.
+ *     - Fetches song data and processes it.
+ *     - Updates the target time based on the fetched song length.
+ * - Handles errors by logging them and retrying after specified delays.
+ *
+ * The function uses coroutines for suspending execution and delays.
+ *
+ * @throws Exception If an error occurs during the process.
+ */
 suspend fun main() {
-    val sqlConnectionData = SleConnectionData(
-        urlDriver = "jdbc:mysql://",
-        ipAddress = "192.168.1.185:3306",
-        targetDatabase = "JBTestQL",
-        driverClassName = "com.mysql.cj.jdbc.Driver",
-        username = "jeremiah",
-        password = UserInfo().password
-    )
-
-    val mongoDBConnectionData = SleConnectionData(
-        urlDriver = "mongodb://",
-        ipAddress = "192.168.1.185:27017",
-        targetDatabase = "JBTestQL",
-        driverClassName = "com.mysql.cj.jdbc.Driver",
-        username = "jeremiah",
-        password = UserInfo().password
-
-    )
-    val sqlConnector = DatabaseConnector(sqlConnectionData)
-    val mongoDBConnector = DatabaseConnector(mongoDBConnectionData)
+    val sqlConnector = SQLDatabaseConnector(SQLConnectionData())
+    val mongoDBConnector = MongoDBDatabaseConnector(MongoDBConnectionData())
 
     val logger = LoggerFactory.getLogger("Main")
     val sqlQueries = SQLQueries(sqlConnector.connectToDatabase()) // Initialize SQLQueries
     sqlQueries.createTables() // Create tables if they do not exist
 
+    val mongoDBRequests = MongoDBRequests(mongoDBConnector)
     // Initial target time; consider updating this based on the actual data from your API
     val targetTimeString = "2024-09-23 23:35:35 +0200"
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")
@@ -53,11 +56,11 @@ suspend fun main() {
             if (secondsUntilTarget > 0) {
                 logger.info("Waiting for $secondsUntilTarget seconds until the target time...")
                 delay(secondsUntilTarget * 1000) // Delay in milliseconds
-                println("Delaying for ${secondsUntilTarget * 1000} ms")
+                logger.info("Delaying for ${secondsUntilTarget * 1000} ms")
             } else {
                 logger.info("Target time reached or passed, starting the process...")
 
-                val mongoDBRequests = MongoDBRequests() // Initialize MongoDBRequests
+                val mongoDBRequests = MongoDBRequests(mongoDBConnector) // Initialize MongoDBRequests
                 val bridge = HttpDatabaseBridge(sqlQueries, mongoDBRequests)
                 // Fetch song data and get its length
                 val songLengthInSeconds = bridge.fetchSongData()?.length ?: 30 // Default to 30 if null
@@ -73,7 +76,7 @@ suspend fun main() {
                 logger.info("Process completed.")
                 logger.info("Closing resources...")
                 bridge.close() // Close the Ktor client when done
-                mongoDBRequests.close() // Close MongoDB requests
+                //mongoDBRequests.close() // Close MongoDB requests
 
                 // Wait before the next cycle (you can adjust this delay as needed)
                 logger.info("Waiting for 1 second before the next cycle...")
@@ -88,10 +91,10 @@ suspend fun main() {
 
             if (secondsUntilTarget > 0) {
                 delay(secondsUntilTarget * 1000) // Retry after calculated delay
-                println("Retrying after ${secondsUntilTarget * 1000} ms")
+                logger.info("Retrying after ${secondsUntilTarget * 1000} ms")
             } else {
                 delay(5000) // Default retry delay if target time has passed
-                println("Retrying after 5000 ms")
+                logger.info("Retrying after 5000 ms")
             }
         }
     }

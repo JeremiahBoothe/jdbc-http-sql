@@ -1,4 +1,4 @@
-package jdbchttpsql.data.encrypt
+package jdbchttpsql.encrypt
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.encoders.Base64
@@ -20,6 +20,12 @@ class EncryptDecrypt {
      */
     val secretKey: String = "662ede816988e58fb6d057d9d85605e0"
 
+    /**
+     * Encrypts the given string using AES encryption with the provided key.
+     *
+     * @param strToEncrypt The string to be encrypted.
+     * @return The encrypted string encoded in Base64, or null if an error occurs during encryption.
+     */
     fun String.encrypt(strToEncrypt: String): String? {
         Security.addProvider(BouncyCastleProvider())
         var keyBytes: ByteArray
@@ -62,6 +68,13 @@ class EncryptDecrypt {
         return null
     }
 
+    /**
+     * Decrypts the given string using AES encryption with the provided key.
+     *
+     * @param key the AES key used for decryption.
+     * @param strToDecrypt the string to be decrypted.
+     * @return the decrypted string, or null if an error occurs during decryption.
+     */
     fun decryptWithAES(key: String, strToDecrypt: String?): String? {
         Security.addProvider(BouncyCastleProvider())
         var keyBytes: ByteArray

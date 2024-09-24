@@ -2,8 +2,8 @@
 plugins {
     kotlin("jvm") version "1.9.20"
     kotlin("plugin.serialization") version "1.9.20"
-    kotlin("plugin.lombok") version "1.9.20"
-    id("io.freefair.lombok") version "8.10"
+    //kotlin("plugin.lombok") version "1.9.20"
+    //id("io.freefair.lombok") version "8.10"
     id("org.owasp.dependencycheck") version "10.0.3"
     id("org.openapi.generator") version "7.0.1"
     //kapt("androidx.room")

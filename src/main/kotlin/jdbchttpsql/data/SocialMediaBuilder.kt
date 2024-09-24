@@ -14,9 +14,9 @@ class SocialMediaBuilder private constructor(
         var connection: String? = null,
         var post: String? = null,
         ) {
-        fun connection(connection: String) = apply { this.connection = connection }
-        fun post(post: String) = apply { this.post = post }
-        fun build() = SocialMediaBuilder(connection, post)
+        private fun connection(connection: String) = apply { this.connection = connection }
+        private fun post(post: String) = apply { this.post = post }
+        private fun build() = SocialMediaBuilder(connection, post)
 
         /**
          * Potentially random building, I don't know what purpose there would be to randomize the connection

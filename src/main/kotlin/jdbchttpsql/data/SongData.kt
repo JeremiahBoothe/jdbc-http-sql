@@ -4,29 +4,35 @@ import kotlinx.serialization.Serializable
 import org.ktorm.schema.BaseTable
 
 /**
- *  @author Jeremiah Boothe
- *  @object [RadioMetaData]
- *  @constructor [MetaData]
- *  @see [RadioMetaData]
- *  @return nothing
+ * Represents metadata for a song, including details such as the song's ID, title, album, genre, and artist information.
  *
+ * @property id A unique identifier for the song.
+ * @property type The type or category of the song, if applicable.
+ * @property title The title of the song.
+ * @property album The album to which the song belongs.
+ * @property length The length or duration of the song in seconds.
+ * @property genre The genre of the song, if specified.
+ * @property releaseyear The year the song was released.
+ * @property created_at The timestamp of when the song entry was created.
+ * @property artist The artist who performed or created the song.
+ * @property started_at The starting timestamp for when the song began playing.
+ * @property ends_at The ending timestamp for when the song stopped playing.
  */
 class SongData {
     /**
-     * Connect to a database using the specific connection arguments.
-     * @see Serializable
-     * @param album the album name of the currently playing album.
-     * @param sku the sku of the currently playing song.
-     * @param thumb the thumbnail url of the currently playing album.
-     * @param artist the name of the artist currently playing artist.
-     * @param title the name of the currently playing song.
-     * @param played_show the name of the radio show currently playing the song.
-     * @param buy_urls the url to buy the album or song.
-     * @param info_urls the url with artist, song, and/or album info.
-     * @param duration the play duration of the currently playing song.
-     * @param guid the radio station id for the currently playing song used as primary key.
-     * @param timestamp when the currently playing song was played to keep track of streams.
-     * @return the new-created database object.
+     * Represents metadata for a song, including details such as the song's ID, title, album, genre, and artist information.
+     *
+     * @property id A unique identifier for the song.
+     * @property type The type or category of the song, if applicable.
+     * @property title The title of the song.
+     * @property album The album to which the song belongs.
+     * @property length The length or duration of the song in seconds.
+     * @property genre The genre of the song, if specified.
+     * @property releaseyear The year the song was released.
+     * @property created_at The timestamp of when the song entry was created.
+     * @property artist The artist who performed or created the song.
+     * @property started_at The starting timestamp for when the song began playing.
+     * @property ends_at The ending timestamp for when the song stopped playing.
      */
     @Serializable
     data class SongData(
@@ -42,21 +48,11 @@ class SongData {
         val started_at: String?,
         val ends_at: String?
     )
+
     /**
-     * Maps data class to BaseTable
-     * @constructor [RadioMetaData]
-     * @param album the album name of the currently playing album.
-     * @param sku the sku of the currently playing song.
-     * @param thumb the thumbnail url of the currently playing album.
-     * @param artist the name of the artist currently playing artist.
-     * @param title the name of the currently playing song.
-     * @param played_show the name of the radio show currently playing the song.
-     * @param buy_urls the url to buy the album or song.
-     * @param info_urls the url with artist, song, and/or album info.
-     * @param duration the play duration of the currently playing song.
-     * @param guid the radio station id for the currently playing song used as primary key.
-     * @param timestamp when the currently playing song was played to keep track of streams.
-     * @see BaseTable
+     * Represents an artist in the music metadata.
+     *
+     * @property name The name of the artist.
      */
     @Serializable
     data class Artist(
