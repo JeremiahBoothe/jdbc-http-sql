@@ -1,5 +1,7 @@
 package jdbchttpsql
 
+import jdbchttpsql.data.DatabaseConnector
+import jdbchttpsql.data.SleConnectionData
 import jdbchttpsql.repository.SQLQueries
 import jdbchttpsql.repository.MongoDBRequests
 import jdbchttpsql.model.HttpDatabaseBridge
@@ -11,8 +13,29 @@ import java.time.temporal.ChronoUnit
 import java.time.ZoneId
 
 suspend fun main() {
+    val sqlConnectionData = SleConnectionData(
+        urlDriver = "jdbc:mysql://",
+        ipAddress = "192.168.1.185:3306",
+        targetDatabase = "JBTestQL",
+        driverClassName = "com.mysql.cj.jdbc.Driver",
+        username = "jeremiah",
+        password = UserInfo().password
+    )
+
+    val mongoDBConnectionData = SleConnectionData(
+        urlDriver = "mongodb://",
+        ipAddress = "192.168.1.185:27017",
+        targetDatabase = "JBTestQL",
+        driverClassName = "com.mysql.cj.jdbc.Driver",
+        username = "jeremiah",
+        password = UserInfo().password
+
+    )
+    val sqlConnector = DatabaseConnector(sqlConnectionData)
+    val mongoDBConnector = DatabaseConnector(mongoDBConnectionData)
+
     val logger = LoggerFactory.getLogger("Main")
-    val sqlQueries = SQLQueries() // Initialize SQLQueries
+    val sqlQueries = SQLQueries(sqlConnector.connectToDatabase()) // Initialize SQLQueries
     sqlQueries.createTables() // Create tables if they do not exist
 
     // Initial target time; consider updating this based on the actual data from your API

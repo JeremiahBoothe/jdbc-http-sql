@@ -12,26 +12,18 @@ import org.ktorm.logging.LogLevel
  * @property [user] User Name for database login.
  * @property [password] User Password for database login.
  */
-object DatabaseConnector {
+/** Initializes the database connection using generic connection data.
+ * @param [sourceValues] The connection data needed for database initialization.
+ */
+class DatabaseConnector<T : ConnectionData>(private val connectionData: T) {
 
-    private val source: String = DatabaseSourceBuilder().getUrl()
-    private val driver: String = DatabaseSourceBuilder().getDriver()
-    private val user: String = DatabaseSourceBuilder().getUser()
-    private val password: String = DatabaseSourceBuilder().getPassword()
-
-    val databaseConnection = Database.connect(
-        url = source,
-        driver = driver,
-        user = user,
-        password = password,
-        logger = ConsoleLogger(threshold = LogLevel.INFO),
-    )
-
-    /** to be built dynamically
-     *     val dataBaseConnector = DatabaseConnectionBuilder.Builder()
-     *         .connection("")
-     *         .post("")
-     *         .build()
-     *
-     */
+    fun connectToDatabase(): Database {
+        return Database.connect(
+            url = "${connectionData.urlDriver}${connectionData.ipAddress}/${connectionData.targetDatabase}",
+            driver = (connectionData as? SleConnectionData)?.driverClassName ?: "",
+            user = connectionData.username,
+            password = connectionData.password,
+            logger = ConsoleLogger(threshold = LogLevel.INFO)
+        )
+    }
 }

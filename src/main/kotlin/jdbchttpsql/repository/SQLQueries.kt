@@ -1,7 +1,6 @@
 package jdbchttpsql.repository
 
 import jdbchttpsql.data.SongData
-import jdbchttpsql.data.DatabaseConnector
 import org.ktorm.database.Database
 import org.ktorm.dsl.insert
 import org.ktorm.schema.Table
@@ -9,11 +8,11 @@ import org.ktorm.schema.int
 import org.ktorm.schema.text
 import org.slf4j.LoggerFactory
 import java.sql.SQLException
-import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.Statement
 
-class SQLQueries {
+class SQLQueries
+    internal constructor(private val databaseConnection: Database) {
     private val logger = LoggerFactory.getLogger(SQLQueries::class.java)
 
     // Define the SongTable corresponding to your SQL table schema
@@ -29,9 +28,6 @@ class SQLQueries {
         val startedAt = text("started_at")
         val endsAt = text("ends_at")
     }
-
-    // Establish a connection to the database
-    private val database = DatabaseConnector.databaseConnection
 
     // SQL statement for creating the table
     private val createTableSQL = """
@@ -51,7 +47,7 @@ class SQLQueries {
 
     // Create the tables if they do not exist
     fun createTables() {
-        database.useConnection { connection ->
+        databaseConnection.useConnection { connection ->
             try {
                 connection.createStatement().use { statement ->
                     statement.execute(createTableSQL)
@@ -71,7 +67,7 @@ class SQLQueries {
         val sqlCheckTableExists = "SELECT * FROM information_schema.tables WHERE table_name = '$tableName';"
 
         try {
-            database.useConnection { conn ->
+            databaseConnection.useConnection { conn ->
                 val statement: Statement = conn.createStatement()
                 val resultSet: ResultSet = statement.executeQuery(sqlCheckTableExists)
 
@@ -94,9 +90,9 @@ class SQLQueries {
             // Validate songData before insertion
             requireNotNull(songData.id) { "Song ID cannot be null." }
 
-            database.useTransaction {
+            databaseConnection.useTransaction {
                 logger.info("Starting transaction for inserting song data.")
-                database.insert(SongTable) {
+                databaseConnection.insert(SongTable) {
                     set(SongTable.id, songData.id)
                     set(SongTable.title, songData.title)
                     set(SongTable.album, songData.album)

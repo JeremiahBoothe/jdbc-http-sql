@@ -1,4 +1,4 @@
-package jdbchttpsql.data.Encrypt
+package jdbchttpsql.data.encrypt
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.encoders.Base64

@@ -7,12 +7,12 @@ import kotlinx.serialization.Serializable
  * @property urlDriver
  */
 @Serializable
-data class SleConnectionData(
+data class RadioTfscConnectionData(
     override val urlDriver: String,
     override val ipAddress: String,
     override val targetDatabase: String,
-    //val connectionUrl: String = "$urlDriver$ipAddress/$targetDatabase",
+    //override val connectionUrl: String,
     override val driverClassName: String,
     override val username: String,
-    override val password: String,
-): ConnectionData
+    override var password: String
+) : ConnectionData

@@ -13,7 +13,7 @@ class MongoDBRequests {
     private val logger = LoggerFactory.getLogger(MongoDBRequests::class.java)
 
     // MongoDB client and database initialization
-    val settings: MongoClientSettings = MongoClientSettings.builder()
+    private val settings: MongoClientSettings = MongoClientSettings.builder()
         .applyConnectionString(ConnectionString("mongodb://192.168.1.185:27017"))
         .applyToConnectionPoolSettings { builder ->
             builder.minSize(2) // Minimum number of connections

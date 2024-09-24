@@ -1,30 +1,17 @@
 package jdbchttpsql.sources
 
-import jdbchttpsql.UserInfo
+import jdbchttpsql.data.ConnectionData
 
-class DatabaseSourceBuilder(
-    private val urlDriver: String = "jdbc:mysql://",
-    private val ipAddress: String = "192.168.1.185:3306",
-    private val targetDatabase: String = "JBTestQL",
-    private val url: String = "$urlDriver$ipAddress/$targetDatabase",
-    private val driver: String = "com.mysql.cj.jdbc.Driver",
-    private val user: String = "jeremiah",
-    private var password: String = UserInfo().password,
+class DatabaseSourceBuilder<T : ConnectionData>(private val connectionData: T) {
 
-) {
-    fun getUrl(): String {
-        return url
-    }
+    private val connectionUrl = "${connectionData.urlDriver}${connectionData.ipAddress}/${connectionData.targetDatabase}"
 
-    fun getDriver(): String {
-        return driver
-    }
+    fun getUrl(): String = connectionUrl
 
-    fun getUser(): String {
-        return user
-    }
+    fun getDriver(): String = connectionData.urlDriver
 
-    fun getPassword(): String {
-        return password
-    }
+    fun getUser(): String = connectionData.username
+
+    fun getPassword(): String = connectionData.password
 }
+
