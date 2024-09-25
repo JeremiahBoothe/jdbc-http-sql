@@ -9,7 +9,7 @@
 .settings
 .springBeans
 .sts4-cache
-credentials.json
+src/main/kotlin/jdbchttpsql/adapters/credentials.json
 
 # Created by https://www.gitignore.io/api/git,java,maven,eclipse,windows
 
