@@ -12,7 +12,6 @@ import jdbchttpsql.repository.MongoDBRequests
 import jdbchttpsql.repository.SQLQueries
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 
@@ -69,6 +68,7 @@ class HttpDatabaseBridge(private val sqlQueries: SQLQueries, private val mongoDB
     suspend fun processSongData() {
         // Ensure MongoDB collection exists
         mongoDBRequests.ensureCollectionExists()
+        // Ensure SQL table Exists
         sqlQueries.ensureTableExists()
         repeat(repeatCount) {
             try {

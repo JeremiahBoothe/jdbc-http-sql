@@ -6,10 +6,8 @@ import com.mongodb.kotlin.client.MongoClient
 import com.mongodb.kotlin.client.MongoCollection
 import com.mongodb.kotlin.client.MongoDatabase
 import jdbchttpsql.data.ConnectionData
-import jdbchttpsql.data.MongoDBConnectionData
 import jdbchttpsql.data.SongData
 import org.bson.Document
-import org.ktorm.database.Database
 import org.slf4j.LoggerFactory
 
 /**

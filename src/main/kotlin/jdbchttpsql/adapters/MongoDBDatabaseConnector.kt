@@ -2,10 +2,6 @@ package jdbchttpsql.adapters
 
 import jdbchttpsql.data.ConnectionData
 import jdbchttpsql.data.MongoDBConnectionData
-import jdbchttpsql.data.SQLConnectionData
-import org.ktorm.database.Database
-import org.ktorm.logging.ConsoleLogger
-import org.ktorm.logging.LogLevel
 
 /**
  * A class responsible for establishing connections to a MongoDB database.

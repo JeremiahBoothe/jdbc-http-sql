@@ -1,7 +1,6 @@
 package jdbchttpsql.data
 
 import kotlinx.serialization.Serializable
-import org.ktorm.schema.BaseTable
 
 /**
  * Represents metadata for a song, including details such as the song's ID, title, album, genre, and artist information.

@@ -1,7 +1,7 @@
 package jdbchttpsql.adapters
 
 /**
- * A class used to build instances of `DatabaseConnectionBuilder`.
+ * A work in progress class, used to build instances of `DatabaseConnectionBuilder`.
  * The builder class helps in building a `DatabaseConnectionBuilder`
  * instance with specific configurations for a database connection.
  */
