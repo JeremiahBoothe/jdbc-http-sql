@@ -11,7 +11,7 @@ import java.io.File
  * @return The deserialized UserInfo object with the user details.
  */
 fun loadUserInfoFromFile(): UserInfo {
-val filePath = "D:\\My Documents\\Programming Projects\\IdeaProjects\\jdbchttpsql\\src\\main\\kotlin\\jdbchttpsql\\adapters\\credentials.json"
+val filePath = "D:\\My Documents\\Programming Projects\\IdeaProjects\\jdbchttpsql\\credentials.json"
 val jsonContent = File(filePath).readText()
 
     // Parse the JSON to the Credentials data class
