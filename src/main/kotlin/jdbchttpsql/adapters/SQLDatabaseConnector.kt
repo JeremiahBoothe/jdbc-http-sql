@@ -20,14 +20,15 @@ import org.ktorm.logging.LogLevel
 class SQLDatabaseConnector<T : ConnectionData>(private val connectionData: T):
     ConnectionData by connectionData {
     /**
-     * Establishes a connection to a SQL database using the provided connection data.
+     * Connects to a SQL database using the provided connection data.
      *
-     * This method utilizes connection parameters from the `SQLConnectionData` instance
-     * to establish a connection to the target SQL database. If the connection data type is not
-     * supported, an `IllegalArgumentException` is thrown.
+     * The method utilizes the specified connection parameters, such as URL driver, IP address,
+     * target database, driver class name, username, and password, to establish a connection.
+     * It logs the connection process with a ConsoleLogger set to INFO level. An exception
+     * will be thrown if the connection data type is unsupported.
      *
-     * @throws IllegalArgumentException If the connection data type is unsupported.
-     * @return A `Database` object representing the established database connection.
+     * @return An instance of [Database] representing the established connection.
+     * @throws IllegalArgumentException if the connection data type is unsupported.
      */
     fun connectToDatabase(): Database {
         val driverClass = when (connectionData) {

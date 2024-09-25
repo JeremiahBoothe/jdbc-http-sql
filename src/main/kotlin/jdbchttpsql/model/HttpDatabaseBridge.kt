@@ -87,10 +87,9 @@ class HttpDatabaseBridge(private val sqlQueries: SQLQueries, private val mongoDB
                 }
                 delay(1000) // Throttle requests
             } catch (e: Exception) {
-                logger.error("An error occurred: ${e.message}")
+                logger.error("An error occurred in HttpDatabaseBridge: ${e.message}")
             }
         }
-
         mongoDBRequests.close()
     }
 

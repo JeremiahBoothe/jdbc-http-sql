@@ -8,6 +8,7 @@ import jdbchttpsql.repository.SQLQueries
 import jdbchttpsql.repository.MongoDBRequests
 import jdbchttpsql.model.HttpDatabaseBridge
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -15,35 +16,36 @@ import java.time.temporal.ChronoUnit
 import java.time.ZoneId
 
 /**
- * Entry point for the application. This suspend function initializes database connectors, sets up logging,
- * and enters an infinite loop to periodically fetch and process song data from an API.
+ * The main entry point for the application, executed within a coroutine scope enabled by runBlocking.
  *
- * The function performs the following tasks:
- * - Initializes SQL and MongoDB database connectors.
- * - Sets up SQL queries and creates tables if they do not exist.
- * - Sets an initial target time for synchronization.
- * - Enters a loop where it:
- *     - Waits for the calculated interval until the next target time.
- *     - Fetches song data and processes it.
- *     - Updates the target time based on the fetched song length.
- * - Handles errors by logging them and retrying after specified delays.
+ * This method initializes the necessary database connectors, loggers, SQL queries, and periodically
+ * processes song data fetched from an external HTTP source and stores it in databases, re-checking the
+ * target time to determine the delay between fetches.
  *
- * The function uses coroutines for suspending execution and delays.
+ * The process involves:
+ * - Connecting to SQL and MongoDB databases.
+ * - Creating necessary SQL tables if they do not exist.
+ * - Setting and updating target times for data fetching cycles.
+ * - Fetching and processing song data from an external HTTP source.
+ * - Handling potential exceptions and implementing a retry mechanism.
  *
- * @throws Exception If an error occurs during the process.
- */
-suspend fun main() {
+ * @receiver Array<String> Command-line arguments for*/
+//TODO: Args - command line arguments for one time configuration.
+fun Array<String>.main() =
+    runBlocking {
+
     val sqlConnector = SQLDatabaseConnector(SQLConnectionData())
     val mongoDBConnector = MongoDBDatabaseConnector(MongoDBConnectionData())
-
     val logger = LoggerFactory.getLogger("Main")
     val sqlQueries = SQLQueries(sqlConnector.connectToDatabase()) // Initialize SQLQueries
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")
     sqlQueries.createTables() // Create tables if they do not exist
 
-    var mongoDBRequests = MongoDBRequests(mongoDBConnector)
-    // Initial target time; consider updating this based on the actual data from your API
+    lateinit var mongoDBRequests: MongoDBRequests
+
+    /** TODO: finish moving time related handling to [jdbchttpsql.adapters.TimeHandler] class */
     val targetTimeString = "2024-09-23 23:35:35 +0200"
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")
+
     var targetTime = ZonedDateTime.parse(targetTimeString, formatter)
 
     while (true) {
@@ -60,7 +62,7 @@ suspend fun main() {
             } else {
                 logger.info("Target time reached or passed, starting the process...")
 
-                mongoDBRequests = MongoDBRequests(mongoDBConnector) // Initialize MongoDBRequests
+                mongoDBRequests = MongoDBRequests(mongoDBConnector) // Initialize MongoDBRequests/refresh connection
                 val bridge = HttpDatabaseBridge(sqlQueries, mongoDBRequests)
                 // Fetch song data and get its length
                 val songLengthInSeconds = bridge.fetchSongData()?.length ?: 30 // Default to 30 if null
@@ -76,11 +78,10 @@ suspend fun main() {
                 logger.info("Process completed.")
                 logger.info("Closing resources...")
                 bridge.close() // Close the Ktor client when done
-                //mongoDBRequests.close() // Close MongoDB requests
 
                 // Wait before the next cycle (you can adjust this delay as needed)
                 logger.info("Waiting for 1 second before the next cycle...")
-                delay(1000) // Delay for 5 seconds
+                delay(1000) // Delay for 1 second
             }
         } catch (e: Exception) {
             logger.error("An error occurred during the process: ${e.message}", e)
@@ -91,10 +92,10 @@ suspend fun main() {
 
             if (secondsUntilTarget > 0) {
                 delay(secondsUntilTarget * 1000) // Retry after calculated delay
-                logger.info("Retrying after ${secondsUntilTarget * 1000} ms")
+                logger.info("Retrying after $secondsUntilTarget second(s).")
             } else {
                 delay(5000) // Default retry delay if target time has passed
-                logger.info("Retrying after 5000 ms")
+                logger.info("Retrying after 5 second")
             }
         }
     }

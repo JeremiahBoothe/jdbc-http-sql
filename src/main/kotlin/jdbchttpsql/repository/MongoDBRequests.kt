@@ -35,10 +35,13 @@ internal constructor(private val mongoDBConnectionData: ConnectionData){
     private val collection: MongoCollection<Document> = database.getCollection("metadata")
 
     /**
-     * Ensures that the specified MongoDB collection exists.
+     * Ensures that the MongoDB collection exists.
      *
-     * This function checks the document count in the collection and logs a message
-     * indicating the creation of the collection if the count is zero.
+     * This method checks if any documents exist in the MongoDB collection. If no documents
+     * are found, it logs that the collection has been created. MongoDB typically creates
+     * collections automatically upon the first insert, so this is mainly a verification step.
+     *
+     * Logs an informational message when the collection is confirmed to exist or is created.
      */
     fun ensureCollectionExists() {
         // MongoDB creates the collection automatically when you perform the first insert

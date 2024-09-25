@@ -5,11 +5,11 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 /**
- * A class that handles the processing of song data, including fetching song data,
- * updating target times, and logging relevant information.
+ * A class that processes song data by interacting with both an HTTP database bridge and a logger.
+ * This class fetches song data, updates target times, and logs the progress.
  *
- * @property bridge An instance of `HttpDatabaseBridge` used for fetching and storing song data.
- * @property logger An instance of `org.slf4j.Logger` for logging messages.
+ * @property bridge An instance of `HttpDatabaseBridge` to handle database interactions.
+ * @property logger An instance of `org.slf4j.Logger` to log messages and errors.
  */
 class SongProcessor(private val bridge: HttpDatabaseBridge, private val logger: org.slf4j.Logger) {
     suspend fun processSongData(targetTime: ZonedDateTime, timeHandler: TimeHandler): ZonedDateTime {
