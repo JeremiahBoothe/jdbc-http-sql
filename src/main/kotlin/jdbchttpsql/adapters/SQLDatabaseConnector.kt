@@ -34,7 +34,6 @@ class SQLDatabaseConnector<T : ConnectionData>(private val connectionData: T):
             is SQLConnectionData -> connectionData.driverClassName
             else -> throw IllegalArgumentException("Unsupported connection data type")
         }
-
         return Database.connect(
             url = "$urlDriver$ipAddress/$targetDatabase",  // Delegated properties
             driver = driverClass,

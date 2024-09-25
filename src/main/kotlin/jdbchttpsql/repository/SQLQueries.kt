@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory
 import java.sql.SQLException
 import java.sql.ResultSet
 import java.sql.Statement
+import kotlin.reflect.KClass
+import kotlin.reflect.full.memberProperties
 
 /**
  * A utility class to manage SQL queries for the 'metadata' table.
@@ -39,6 +41,8 @@ class SQLQueries
         val endsAt = text("ends_at")
     }
 
+
+
     /**
      * SQL statement to create the "metadata" table if it does not exist.
      *
@@ -54,20 +58,23 @@ class SQLQueries
      * - started_at: Timestamp when the song started playing of type TEXT.
      * - ends_at: Timestamp when the song ended playing of type TEXT.
      */
-    private val createTableSQL = """
-        CREATE TABLE IF NOT EXISTS metadata (
-            id INT PRIMARY KEY,
-            title VARCHAR(255),
-            album VARCHAR(255),
-            artist VARCHAR(255),
-            length INT,
-            genre VARCHAR(255),
-            releaseyear INT,
-            created_at TEXT,
-            started_at TEXT,
-            ends_at TEXT
+    private fun String.createTableSQL(clazz: KClass<*>): String {
+        val columns = clazz.memberProperties.joinToString(",\n") { prop ->
+            val sqlType = when (prop.returnType.toString()) {
+                "kotlin.Int" -> "INT"
+                "kotlin.String" -> "VARCHAR(255)"
+                else -> "TEXT"  // Default type for unknowns or complex objects
+            }
+            "${prop.name} $sqlType"
+        }
+
+        return """
+        CREATE TABLE IF NOT EXISTS ${this} (
+        $columns,
+        PRIMARY KEY (id)
         );
     """.trimIndent()
+    }
 
     /**
      * Creates necessary tables in the database if they do not already exist.
@@ -81,7 +88,7 @@ class SQLQueries
         databaseConnection.useConnection { connection ->
             try {
                 connection.createStatement().use { statement ->
-                    statement.execute(createTableSQL)
+                    statement.execute("metadata".createTableSQL(SongData.SongData::class))
                 }
                 logger.info("Table 'metadata' ensured to exist.")
             } catch (e: SQLException) {

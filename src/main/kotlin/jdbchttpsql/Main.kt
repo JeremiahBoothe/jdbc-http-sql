@@ -40,7 +40,7 @@ suspend fun main() {
     val sqlQueries = SQLQueries(sqlConnector.connectToDatabase()) // Initialize SQLQueries
     sqlQueries.createTables() // Create tables if they do not exist
 
-    val mongoDBRequests = MongoDBRequests(mongoDBConnector)
+    var mongoDBRequests = MongoDBRequests(mongoDBConnector)
     // Initial target time; consider updating this based on the actual data from your API
     val targetTimeString = "2024-09-23 23:35:35 +0200"
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")
@@ -60,7 +60,7 @@ suspend fun main() {
             } else {
                 logger.info("Target time reached or passed, starting the process...")
 
-                val mongoDBRequests = MongoDBRequests(mongoDBConnector) // Initialize MongoDBRequests
+                mongoDBRequests = MongoDBRequests(mongoDBConnector) // Initialize MongoDBRequests
                 val bridge = HttpDatabaseBridge(sqlQueries, mongoDBRequests)
                 // Fetch song data and get its length
                 val songLengthInSeconds = bridge.fetchSongData()?.length ?: 30 // Default to 30 if null
