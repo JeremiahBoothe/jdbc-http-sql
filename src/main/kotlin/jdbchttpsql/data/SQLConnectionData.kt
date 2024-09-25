@@ -1,20 +1,23 @@
 package jdbchttpsql.data
 
 import jdbchttpsql.adapters.UserInfo
+import jdbchttpsql.adapters.loadUserInfoFromFile
 import kotlinx.serialization.Serializable
+import org.h2.engine.User
 
 /**
- * Data class representing SQL connection parameters.
+ * Data class representing the essential data required for establishing an SQL database connection.
  *
- * This class implements the [ConnectionData] interface and provides default values specific to
- * an SQL connection, including the URL driver, IP address, target database, and driver class name.
+ * This class provides the necessary parameters to connect to an SQL database, including the URL driver,
+ * IP address, target database, driver class name, username, and password. It implements the [ConnectionData]
+ * interface and acts as a concrete implementation specifically for SQL databases.
  *
- * @property urlDriver The URL driver for the SQL connection, defaulting to "jdbc:mysql://".
- * @property ipAddress The IP address and port for the SQL server, defaulting to "192.168.1.185:3306".
- * @property targetDatabase The target database name, defaulting to "JBTestQL".
- * @property driverClassName The class name of the SQL driver, defaulting to "com.mysql.cj.jdbc.Driver".
- * @property userName The username for the SQL connection, using default values from [UserInfo].
- * @property password The password for the SQL connection, using default values from [UserInfo].
+ * @property urlDriver The JDBC URL prefix used to establish the connection. Defaults to "jdbc:mysql://".
+ * @property ipAddress The IP address and port number of the database server. Defaults to "192.168.1.185:3306".
+ * @property targetDatabase The name of the database to connect to. Defaults to "JBTestQL".
+ * @property driverClassName The fully qualified name of the JDBC driver class. Defaults to "com.mysql.cj.jdbc.Driver".
+ * @property userName The username for authenticating the connection, loaded from a credentials file.
+ * @property password The password for authenticating the connection, loaded from a credentials file.
  */
 @Serializable
 data class SQLConnectionData(
@@ -22,6 +25,7 @@ data class SQLConnectionData(
     override val ipAddress: String = "192.168.1.185:3306",
     override val targetDatabase: String = "JBTestQL",
     override val driverClassName: String = "com.mysql.cj.jdbc.Driver",
-    override val userName: String = UserInfo().userName,
-    override val password: String = UserInfo().password
+    override val userName: String = loadUserInfoFromFile().userName,
+    override val password: String = loadUserInfoFromFile().password
 ): ConnectionData
+

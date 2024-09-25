@@ -1,20 +1,20 @@
 package jdbchttpsql.data
 
 import jdbchttpsql.adapters.UserInfo
+import jdbchttpsql.adapters.loadUserInfoFromFile
 import kotlinx.serialization.Serializable
 
 /**
- * Data class representing MongoDB connection parameters.
+ * Data class representing the connection parameters required to establish a connection with a MongoDB database.
  *
- * This class implements the [ConnectionData] interface and provides default values specific to
- * a MongoDB connection, including default values for the MongoDB URL driver, IP address, and database name.
+ * This class implements the [ConnectionData] interface and provides specific default values for MongoDB.
  *
- * @property urlDriver The URL driver for the MongoDB connection.
- * @property ipAddress The IP address and port for the MongoDB server.
- * @property targetDatabase The target MongoDB database name.
- * @property driverClassName The driver class name, which is an empty string by default.
- * @property userName The username for the MongoDB connection, using default values from [UserInfo].
- * @property password The password for the MongoDB connection, using default values from [UserInfo].
+ * @property urlDriver The URL driver string used to initiate the MongoDB connection. Defaults to "mongodb://".
+ * @property ipAddress The IP address and port number of the MongoDB server. Defaults to "192.168.1.185:27017".
+ * @property targetDatabase The name of the target MongoDB database to connect to. Defaults to "JBTestMongoDB".
+ * @property driverClassName The class name of the JDBC or other relevant driver for the MongoDB connection. Defaults to an empty string.
+ * @property userName The username used for authentication with the MongoDB database, loaded from a credentials file.
+ * @property password The password used for authentication with the MongoDB database, loaded from a credentials file.
  */
 @Serializable
 data class MongoDBConnectionData(
@@ -22,6 +22,6 @@ data class MongoDBConnectionData(
     override val ipAddress: String = "192.168.1.185:27017",
     override val targetDatabase: String = "JBTestMongoDB",
     override val driverClassName: String = "",
-    override val userName: String = UserInfo().userName,
-    override var password: String = UserInfo().password
+    override val userName: String = loadUserInfoFromFile().userName,
+    override var password: String = loadUserInfoFromFile().password
 ) : ConnectionData

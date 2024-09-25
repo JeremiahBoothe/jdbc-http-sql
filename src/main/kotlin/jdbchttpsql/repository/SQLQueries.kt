@@ -110,7 +110,7 @@ class SQLQueries
      *
      * @throws Exception If an error occurs during the database check or table creation.
      */
-    suspend fun ensureTableExists() {
+    fun ensureTableExists() {
         val tableName = "metadata"
         val sqlCheckTableExists = "SELECT * FROM information_schema.tables WHERE table_name = '$tableName';"
 
