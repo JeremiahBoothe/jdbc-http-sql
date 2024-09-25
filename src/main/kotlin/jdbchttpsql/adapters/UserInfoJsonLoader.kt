@@ -1,6 +1,7 @@
 package jdbchttpsql.adapters
 
 import com.google.gson.Gson
+import io.ktor.server.routing.RoutingPath.Companion.root
 import kotlinx.serialization.json.Json
 import java.io.File
 
@@ -11,7 +12,7 @@ import java.io.File
  * @return The deserialized UserInfo object with the user details.
  */
 fun loadUserInfoFromFile(): UserInfo {
-val filePath = "D:\\My Documents\\Programming Projects\\IdeaProjects\\jdbchttpsql\\credentials.json"
+val filePath = "./credentials.json"
 val jsonContent = File(filePath).readText()
 
     // Parse the JSON to the Credentials data class
