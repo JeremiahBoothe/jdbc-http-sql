@@ -1,5 +1,6 @@
 package jdbchttpsql.repository
 
+import com.mongodb.DuplicateKeyException
 import jdbchttpsql.data.SongData
 import org.ktorm.database.Database
 import org.ktorm.dsl.insert
@@ -22,7 +23,7 @@ import kotlin.reflect.full.memberProperties
  */
 class SQLQueries
     internal constructor(private val databaseConnection: Database) {
-    private val logger = LoggerFactory.getLogger(SQLQueries::class.java)
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     /**
      * Represents the database table structure for storing song metadata.
@@ -88,7 +89,7 @@ class SQLQueries
         databaseConnection.useConnection { connection ->
             try {
                 connection.createStatement().use { statement ->
-                    statement.execute("metadata".createTableSQL(SongData.SongData::class))
+                    statement.execute("metadata".createTableSQL(SongData::class))
                 }
                 logger.info("Table 'metadata' ensured to exist.")
             } catch (e: SQLException) {
@@ -145,7 +146,7 @@ class SQLQueries
      * @throws SQLException If an error occurs during the SQL execution.
      * @throws Exception If an unexpected error occurs.
      */
-    fun insertSongData(songData: SongData.SongData) {
+    fun insertSongData(songData: SongData) {
         try {
             // Validate songData before insertion
             requireNotNull(songData.id) { "Song ID cannot be null." }
@@ -168,11 +169,22 @@ class SQLQueries
                 println("Entry Added SQL!")
             }
         } catch (e: SQLException) {
-            logger.error("SQL error inserting SongData into SQL: ${e.message}", e)
-            //logger.error("Failed SongData: $songData")
+           //logger.error("SQL error inserting SongData into SQL: ${e.message}", e)
+            logger.error("Failed SongData: ${e.message}")
+        } catch (e: DuplicateKeyException) {
+            //logger.error("Error inserting SongData into SQL: ${e.message}", e)
+            logger.error("Failed SQL Insert: ${e.message}")
+        }
+    }
+
+    fun close() {
+        try {
+            this.databaseConnection.useConnection { conn ->
+                conn.close()
+                logger.info("SQL connection closed.")
+            }
         } catch (e: Exception) {
-            logger.error("Error inserting SongData into SQL: ${e.message}", e)
-            //logger.error("Failed SongData: $songData")
+            logger.error("Error closing SQL Connection Closed: ${e.message}", e)
         }
     }
 }

@@ -16,6 +16,8 @@ import java.time.temporal.ChronoUnit
 import java.time.ZoneId
 
 /**
+ *
+ *
  * The main entry point for the application, executed within a coroutine scope enabled by runBlocking.
  *
  * This method initializes the necessary database connectors, loggers, SQL queries, and periodically
@@ -29,14 +31,17 @@ import java.time.ZoneId
  * - Fetching and processing song data from an external HTTP source.
  * - Handling potential exceptions and implementing a retry mechanism.
  *
- * @receiver Array<String> Command-line arguments for*/
+ * @author Jeremiah Boothe
+ *
+ * @receiver Array<String> Command-line arguments for
+ * */
 //TODO: Args - command line arguments for one time configuration.
 fun Array<String>.main() =
     runBlocking {
 
     val sqlConnector = SQLDatabaseConnector(SQLConnectionData())
     val mongoDBConnector = MongoDBDatabaseConnector(MongoDBConnectionData())
-    val logger = LoggerFactory.getLogger("Main")
+    val logger = LoggerFactory.getLogger(this::class.java)
     val sqlQueries = SQLQueries(sqlConnector.connectToDatabase()) // Initialize SQLQueries
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")
     sqlQueries.createTables() // Create tables if they do not exist

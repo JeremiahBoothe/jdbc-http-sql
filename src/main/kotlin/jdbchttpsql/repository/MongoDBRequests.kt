@@ -1,12 +1,14 @@
 package jdbchttpsql.repository
 
 import com.mongodb.ConnectionString
+import com.mongodb.DuplicateKeyException
 import com.mongodb.MongoClientSettings
 import com.mongodb.kotlin.client.MongoClient
 import com.mongodb.kotlin.client.MongoCollection
 import com.mongodb.kotlin.client.MongoDatabase
 import jdbchttpsql.data.ConnectionData
 import jdbchttpsql.data.SongData
+import okhttp3.internal.closeQuietly
 import org.bson.Document
 import org.slf4j.LoggerFactory
 
@@ -19,8 +21,8 @@ import org.slf4j.LoggerFactory
  */
 class MongoDBRequests
 internal constructor(private val mongoDBConnectionData: ConnectionData){
-    //private val logger = LoggerFactory.getLogger(MongoDBRequests::class.java)
-    private val logger = LoggerFactory.getLogger("MongoDBRequests")
+    private val logger = LoggerFactory.getLogger("\u001B[34m${this::class}\u001B[0m")
+    //private val logger = LoggerFactory.getLogger("MongoDBRequests")
     // MongoDB client and database initialization
     private val settings: MongoClientSettings = MongoClientSettings.builder()
         .applyConnectionString(ConnectionString(mongoDBConnectionData.urlDriver + mongoDBConnectionData.ipAddress))
@@ -61,7 +63,7 @@ internal constructor(private val mongoDBConnectionData: ConnectionData){
      * Logs an info message when the song data is successfully inserted.
      * Logs an error message if an error occurs while inserting the data.
      */
-    fun insertSongData(songData: SongData.SongData) {
+    fun insertSongData(songData: SongData) {
         requireNotNull(songData.id) { "Song ID cannot be null." }
 
         val document = Document(
@@ -82,8 +84,10 @@ internal constructor(private val mongoDBConnectionData: ConnectionData){
         try {
             collection.insertOne(document)
             logger.info("SongData inserted successfully into MongoDB.")
-        } catch (e: Exception) {
-            logger.error("Error inserting SongData: ${e.message}", e)
+        } catch (e: DuplicateKeyException) {
+            logger.error("Failed SongData: $songData")
+            //logger.error("Song ")
+            //logger.error("Error inserting SongData: ${e.message}", e)
         }
     }
 
@@ -95,7 +99,9 @@ internal constructor(private val mongoDBConnectionData: ConnectionData){
      */
     fun close() {
         try {
-            mongoClient.close()
+            this.mongoClient.use { client ->
+                client.close()
+            }
             logger.info("MongoDB connection closed.")
         } catch (e: Exception) {
             logger.error("Error closing MongoDB client: ${e.message}", e)

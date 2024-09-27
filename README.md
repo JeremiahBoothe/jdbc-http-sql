@@ -5,14 +5,14 @@
 ### Introduction
 
 **jdbchttpsql** is a lightweight Java library designed to facilitate HTTP communication with SQL databases using JDBC.
-This library aims to simplify the process of querying SQL databases over HTTP, providing a seamless integration for
-developers.
+This library is the repository foundation for an Android Radio Streaming app to support Indie Radio Stations.
 
 ### Features
 
 - **Simple Integration**: Easily integrate HTTP communication with SQL databases.
 - **Lightweight**: Minimal dependencies and easy to use.
-- **Secure**: Supports secure communication protocols.
+- **Secure**: Supports secure communication protocols.(If BouncyCastle gets implemented)
+- **Efficient**: Uses Song Duration based requests to prevent excessive data requests.
 
 ### Getting Started
 
@@ -45,23 +45,8 @@ developers.
 
 Here is a simple example of how to use **jdbchttpsql** to connect to a database and execute a query:
 
-```java
-import com.yourpackage.jdbchttpsql.JdbcHttpSql;
-
-import java.sql.ResultSet;
-
-public class Main {
-    public static void main(String[] args) {
-        JdbcHttpSql jdbcHttpSql = new JdbcHttpSql("http://yourdatabaseurl");
-
-        String query = "SELECT * FROM your_table";
-        ResultSet resultSet = jdbcHttpSql.executeQuery(query);
-
-        while (resultSet.next()) {
-            System.out.println(resultSet.getString("your_column_name"));
-        }
-    }
-}
+```kotlin
+"Example Use as Library Import"
 ```
 
 ### Configuration

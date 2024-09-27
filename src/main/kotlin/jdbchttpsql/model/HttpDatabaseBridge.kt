@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
+import java.awt.Color
 
 /**
  * A bridge connecting HTTP requests to database operations for fetching and
@@ -23,7 +24,9 @@ import org.slf4j.LoggerFactory
  * @property mongoDBRequests An instance of `MongoDBRequests` to interact with MongoDB.
  */
 class HttpDatabaseBridge(private val sqlQueries: SQLQueries, private val mongoDBRequests: MongoDBRequests) {
-    private val logger = LoggerFactory.getLogger("HttpDatabaseBridge")
+    //private val logger = LoggerFactory.getLogger("HttpDatabaseBridge")
+    private val logger = LoggerFactory.getLogger("\u001b[35m${this::class}\u001b[0m")
+
     private val repeatCount = 3
     private val client = HttpClient(CIO) {
         install(ContentNegotiation) {
@@ -42,7 +45,7 @@ class HttpDatabaseBridge(private val sqlQueries: SQLQueries, private val mongoDB
      *
      * @return The fetched `SongData.SongData` object, or null if an error occurs.
      */
-    suspend fun fetchSongData(): SongData.SongData? {
+    suspend fun fetchSongData(): SongData? {
         return try {
             val response: HttpResponse = client.get(apiEndpoint)
             response.body()
@@ -74,12 +77,12 @@ class HttpDatabaseBridge(private val sqlQueries: SQLQueries, private val mongoDB
             try {
                 val songData = fetchSongData()
                 if (songData != null) {
-                    println("Fetched data: $songData")
+                    logger.info("\u001B[32mFetched data: $songData\u001B[0m")
                     withContext(Dispatchers.IO) {
                         sqlQueries.insertSongData(songData)
-                        logger.info("SQL exists: $songData")
+                        logger.info("SQL Entry Exists: $songData")
                         mongoDBRequests.insertSongData(songData)
-                        logger.info("MongoDB Exists: $songData")
+                        logger.info("MongoDB Entry Exists: $songData")
 
                     }
                 } else {
@@ -90,10 +93,13 @@ class HttpDatabaseBridge(private val sqlQueries: SQLQueries, private val mongoDB
                 logger.error("An error occurred in HttpDatabaseBridge: ${e.message}")
             }
         }
-        mongoDBRequests.close()
     }
 
     fun close() {
-        client.close()
+        this.mongoDBRequests.close()
+        this.sqlQueries.close()
+
+        this.client.close()
+        logger.info("Http connection closed.")
     }
 }
