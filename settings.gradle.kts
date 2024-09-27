@@ -14,7 +14,7 @@ pluginManagement {
 plugins {
     id("org.gradle.toolchains.foojay-resolver") version "0.8.0"
 }
-
+@Suppress("UnstableApiUsage")
 toolchainManagement {
     jvm {
         javaRepositories {
@@ -25,6 +25,7 @@ toolchainManagement {
     }
 }
 
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositories{
         mavenCentral()
