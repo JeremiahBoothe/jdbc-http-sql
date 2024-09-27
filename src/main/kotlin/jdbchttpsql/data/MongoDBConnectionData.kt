@@ -1,6 +1,5 @@
 package jdbchttpsql.data
 
-import jdbchttpsql.adapters.UserInfo
 import jdbchttpsql.adapters.loadUserInfoFromFile
 import kotlinx.serialization.Serializable
 

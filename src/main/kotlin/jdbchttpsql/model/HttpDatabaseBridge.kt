@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
-import java.awt.Color
 
 /**
  * A bridge connecting HTTP requests to database operations for fetching and

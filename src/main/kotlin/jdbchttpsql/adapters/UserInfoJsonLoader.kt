@@ -1,8 +1,6 @@
 package jdbchttpsql.adapters
 
 import com.google.gson.Gson
-import io.ktor.server.routing.RoutingPath.Companion.root
-import kotlinx.serialization.json.Json
 import java.io.File
 
 /**
