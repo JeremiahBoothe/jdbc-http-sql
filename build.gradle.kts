@@ -4,10 +4,10 @@ plugins {
     kotlin("plugin.serialization") version "1.9.10"
     kotlin("plugin.lombok") version "1.9.10"
     id("io.freefair.lombok") version "8.1.0"
-    id("org.owasp.dependencycheck") version "8.4.2"
+    id("org.owasp.dependencycheck") version "10.0.3"
     //id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
     java
-    `jvm-test-suite`
+    id("jvm-test-suite")
     application
 }
 
@@ -23,7 +23,7 @@ dependencies {
     // Tests
 
     //testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
-    implementation("org.owasp:dependency-check-gradle:8.4.2")
+    implementation("org.owasp:dependency-check-gradle:10.0.3")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(kotlin("test"))
@@ -77,7 +77,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(20)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -86,7 +86,7 @@ tasks.withType<Test>().configureEach {
 }
 
 kotlin {
-    jvmToolchain(20)
+    jvmToolchain(17)
 }
 
 application {

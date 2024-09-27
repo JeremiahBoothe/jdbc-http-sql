@@ -17,7 +17,7 @@ class MongoDBRequests {
     // Connect to MongoDB (adjust connection string accordingly)
     private val mongoClient = MongoClient.create("mongodb://192.168.1.185:27017")
     val database: MongoDatabase = mongoClient.getDatabase("JBTestQL")
-    private val collection: MongoCollection<Document> = database.getCollection("TestCollection")
+    private val collection: MongoCollection<Document> = database.getCollection("metadata")
 
     private val mongoDbFormat: FormatDataMongoDB = FormatDataMongoDB(collection)
     // Convert Gson data to BSON and insert into MongoDB
