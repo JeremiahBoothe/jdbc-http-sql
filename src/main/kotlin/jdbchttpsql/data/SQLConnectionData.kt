@@ -1,9 +1,9 @@
 package jdbchttpsql.data
 
-import jdbchttpsql.adapters.UserInfo
+
 import jdbchttpsql.adapters.loadUserInfoFromFile
 import kotlinx.serialization.Serializable
-import org.h2.engine.User
+
 
 /**
  * Data class representing the essential data required for establishing an SQL database connection.

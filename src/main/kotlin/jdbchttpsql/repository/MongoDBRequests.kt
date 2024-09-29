@@ -73,10 +73,10 @@ internal constructor(private val mongoDBConnectionData: ConnectionData){
                 "artist" to songData.artist?.name,
                 "length" to songData.length,
                 "genre" to songData.genre,
-                "releaseyear" to songData.releaseyear,
-                "created_at" to songData.created_at,
-                "started_at" to songData.started_at,
-                "ends_at" to songData.ends_at
+                "releaseyear" to songData.releaseYear,
+                "created_at" to songData.createdAt,
+                "started_at" to songData.startedAt,
+                "ends_at" to songData.endsAt
             )
         )
 

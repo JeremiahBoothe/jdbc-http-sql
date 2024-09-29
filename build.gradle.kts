@@ -1,3 +1,26 @@
+import org.jetbrains.dokka.base.DokkaBase
+import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.dokka.base.DokkaBaseConfiguration
+buildscript {
+    dependencies {
+        classpath("org.jetbrains.dokka:dokka-base:1.9.20")
+    }
+}
+tasks.withType<DokkaTask>().configureEach {
+    val dokkaBaseConfiguration = """
+    {
+      "customAssets": ["${file("assets/my-image.png")}"],
+      "customStyleSheets": ["${file("assets/my-styles.css")}"],
+      "footerMessage": "(c) 2022 MyOrg"
+    }
+    """
+    pluginsMapConfiguration.set(
+        mapOf(
+            // fully qualified plugin name to json configuration
+            "org.jetbrains.dokka.base.DokkaBase" to dokkaBaseConfiguration
+        )
+    )
+}
 /**
  * repositories opens access to declare repositories
  * https://docs.gradle.org/current/userguide/declaring_repositories.html#sec:declaring_public_repository
@@ -9,8 +32,11 @@ repositories {
      * testing directory usually found at c:/users/{username}/.m2/repository on windows
      * https://docs.gradle.org/current/userguide/declaring_repositories.html#sec:case-for-maven-local
      */
-    mavenLocal()}
-
+    mavenLocal()
+}
+tasks.withType(Sign::class.java) {
+    notCompatibleWithConfigurationCache("https://github.com/gradle/gradle/issues/13470")
+}
 
 plugins {
     /**
@@ -34,10 +60,10 @@ plugins {
      */
     id("signing")
 
-    kotlin("jvm") version "1.9.20"
-    kotlin("plugin.serialization") version "1.9.20"
+    kotlin("jvm") version "1.9.24"
+    kotlin("plugin.serialization") version "1.9.24"
     id("jvm-test-suite")
-    id("org.owasp.dependencycheck") version "10.0.3"
+    id("org.owasp.dependencycheck") version "10.0.4"
     id("org.openapi.generator") version "7.0.1"
     //kapt("androidx.room")
     //kotlin("plugin.lombok") version "1.9.20"
@@ -52,7 +78,7 @@ openApiGenerate {
 }
 
 
-val localRepo = repositories.mavenLocal().url.path
+val localRepo = repositories.mavenLocal().url.path!!
 group = "org.jeremiahboothe"
 version = "1.0-SNAPSHOT"
 
@@ -64,6 +90,7 @@ tasks.register<Jar>("dokkaJavadocJar").configure {
     from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
     archiveClassifier.set("javadoc")
 }
+
 tasks.register<Jar>("dokkaJekyllJar").configure {
     dependsOn(tasks.dokkaJekyll)
     from(tasks.dokkaJekyll.flatMap { it.outputDirectory })
@@ -72,7 +99,7 @@ tasks.register<Jar>("dokkaJekyllJar").configure {
 
 
 /**
- * creates publishable kotlinSourcesJar, needed for automaticmanifest control
+ * creates publishable kotlinSourcesJar, needed for automatic manifest control
  */
 tasks.register<Jar>("kotlinSources").configure {
     dependsOn(tasks.kotlinSourcesJar)
@@ -106,7 +133,7 @@ application {
  * adds automatic generation of manifest entries from files
  */
 tasks.withType<Jar>().configureEach {
-    manifest.attributes["Main-Class"] = "$group"
+    manifest.attributes["Main-Class"] = "${group}"
     manifest.attributes["Class-Path"] = configurations
         .runtimeClasspath
         .get()
@@ -114,15 +141,47 @@ tasks.withType<Jar>().configureEach {
     manifest.attributes["API"] = fileTree("src")
         .joinToString(separator = " ") { file -> "${file.name}" }
 }
+tasks.dokkaJekyll.configure{
+    dokkaSourceSets.configureEach {
+        jdkVersion.set(17)
+    }
+    pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+        customStyleSheets = listOf(file("docs/logo-styles.css"))
+        customAssets = listOf(file("docs/logo-icon.svg"))
 
+    }
+
+}
+
+configurations.all {
+    // Resolution strategy to force override the version
+    resolutionStrategy {
+        force("org.apache.commons:commons-collections4:4.4")
+        eachDependency {
+            if (requested.group == "org.apache.commons" && requested.name == "commons-collections") {
+                useTarget("org.apache.commons:commons-collections4:4.4")
+            }
+        }
+    }
+}
 dependencies {
     val ktorVersion = "2.3.12"
 
+
     dokkaPlugin("org.jetbrains.dokka:android-documentation-plugin:1.9.20")
+
+    implementation("org.apache.commons:commons-collections4") {
+        version {
+            strictly("4.4")
+        }
+    }
 
     implementation("org.ktorm:ktorm-core") {
         version {
             strictly("4.1.1")
+        }
+        constraints {
+
         }
     }
 
@@ -146,7 +205,6 @@ dependencies {
     implementation("io.ktor:ktor-client-serialization:$ktorVersion")
     implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
 
-
     implementation("com.google.code.gson:gson:2.11.0")
 
     implementation("org.mongodb:bson-kotlinx:5.1.4")
@@ -160,7 +218,7 @@ dependencies {
      * This commented out implementation is to import the library after creation
      */
     //implementation("app.jdbc.jdbc-http-database:jdbc-http-database:$version")
-    implementation("org.owasp:dependency-check-gradle:10.0.3")
+    //implementation("org.owasp:dependency-check-gradle:10.0.3")
 
     // Tests
     testImplementation("io.kotest:kotest-runner-junit5:5.8.1")
@@ -222,7 +280,6 @@ publishing {
                 /**
                  * licenses
                  */
-
                 licenses {
                     license {
                         name.set("MIT License")
@@ -273,7 +330,7 @@ publishing {
         }
     }
     /**
-     * allows local publication with signing, can be authenticated/tested with kleopatra/gpg to ensure signing is occuring before
+     * allows local publication with signing, can be authenticated/tested with kleopatra/gpg to ensure signing is occurring before
      * final publication
      */
     repositories {

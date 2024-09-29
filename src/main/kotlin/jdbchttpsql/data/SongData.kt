@@ -11,11 +11,11 @@ import kotlinx.serialization.Serializable
  * @property album The album to which the song belongs.
  * @property length The length or duration of the song in seconds.
  * @property genre The genre of the song, if specified.
- * @property releaseyear The year the song was released.
- * @property created_at The timestamp of when the song entry was created.
+ * @property releaseYear The year the song was released.
+ * @property createdAt The timestamp of when the song entry was created.
  * @property artist The artist who performed or created the song.
- * @property started_at The starting timestamp for when the song began playing.
- * @property ends_at The ending timestamp for when the song stopped playing.
+ * @property startedAt The starting timestamp for when the song began playing.
+ * @property endsAt The ending timestamp for when the song stopped playing.
  */
 @Serializable
 data class SongData(
@@ -25,11 +25,11 @@ data class SongData(
     val album: String?,
     val length: Int?,
     val genre: String?,
-    val releaseyear: Int?,
-    val created_at: String?,
+    val releaseYear: Int?,
+    val createdAt: String?,
     val artist: Artist?,
-    val started_at: String?,
-    val ends_at: String?
+    val startedAt: String?,
+    val endsAt: String?
 )
 
 /**

@@ -9,7 +9,7 @@ pluginManagement {
 }
 
 /**
- * Plugins and toolChainManagement added to enforce jvmtoolchain version
+ * Plugins and toolChainManagement added to enforce toolchain version
  */
 plugins {
     id("org.gradle.toolchains.foojay-resolver") version "0.8.0"
@@ -34,4 +34,4 @@ dependencyResolutionManagement {
 
 
 rootProject.name = "jdbchttpsql"
-include(":")
+include(":${rootProject}")

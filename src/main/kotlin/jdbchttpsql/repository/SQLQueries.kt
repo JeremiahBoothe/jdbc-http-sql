@@ -1,3 +1,5 @@
+@file:Suppress("SqlSourceToSinkFlow")
+
 package jdbchttpsql.repository
 
 import com.mongodb.DuplicateKeyException
@@ -160,10 +162,10 @@ class SQLQueries
                     set(SongTable.artist, songData.artist?.name)
                     set(SongTable.length, songData.length)
                     set(SongTable.genre, songData.genre ?: "") // Handle nullable genre
-                    set(SongTable.releaseyear, songData.releaseyear)
-                    set(SongTable.createdAt, songData.created_at)
-                    set(SongTable.startedAt, songData.started_at)
-                    set(SongTable.endsAt, songData.ends_at)
+                    set(SongTable.releaseyear, songData.releaseYear)
+                    set(SongTable.createdAt, songData.createdAt)
+                    set(SongTable.startedAt, songData.startedAt)
+                    set(SongTable.endsAt, songData.endsAt)
                 }
                 logger.info("SongData inserted successfully into SQL.")
                 println("Entry Added SQL!")
