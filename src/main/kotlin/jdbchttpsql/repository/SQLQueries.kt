@@ -39,9 +39,9 @@ class SQLQueries
         val length = int("length")
         val genre = text("genre")
         val releaseyear = int("releaseyear")
-        val createdAt = text("created_at")
-        val startedAt = text("started_at")
-        val endsAt = text("ends_at")
+        val created_at = text("created_at")
+        val started_at = text("started_at")
+        val ends_at = text("ends_at")
     }
 
 
@@ -59,7 +59,7 @@ class SQLQueries
      * - releaseyear: Year of release of type INT.
      * - created_at: Timestamp of creation of type TEXT.
      * - started_at: Timestamp when the song started playing of type TEXT.
-     * - ends_at: Timestamp when the song ended playing of type TEXT.
+     * - created_at: Timestamp when the song ended playing of type TEXT.
      */
     private fun String.createTableSQL(clazz: KClass<*>): String {
         val columns = clazz.memberProperties.joinToString(",\n") { prop ->
@@ -162,10 +162,10 @@ class SQLQueries
                     set(SongTable.artist, songData.artist?.name)
                     set(SongTable.length, songData.length)
                     set(SongTable.genre, songData.genre ?: "") // Handle nullable genre
-                    set(SongTable.releaseyear, songData.releaseYear)
-                    set(SongTable.createdAt, songData.createdAt)
-                    set(SongTable.startedAt, songData.startedAt)
-                    set(SongTable.endsAt, songData.endsAt)
+                    set(SongTable.releaseyear, songData.releaseyear)
+                    set(SongTable.created_at, songData.created_at)
+                    set(SongTable.started_at, songData.started_at)
+                    set(SongTable.ends_at, songData.ends_at)
                 }
                 logger.info("SongData inserted successfully into SQL.")
                 println("Entry Added SQL!")
