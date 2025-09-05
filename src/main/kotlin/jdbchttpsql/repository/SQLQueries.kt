@@ -44,8 +44,6 @@ class SQLQueries
         val ends_at = text("ends_at")
     }
 
-
-
     /**
      * SQL statement to create the "metadata" table if it does not exist.
      *
